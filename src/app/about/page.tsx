@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CVDownloadButton } from "@/components/content/CVDownloadButton";
 import { Container } from "@/components/ui/Container";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function AboutPage() {
           Placeholder semántico para la página About. El contenido definitivo se
           incorporará en una historia posterior.
         </p>
+        <CVDownloadButton className="mt-8" />
       </section>
     </Container>
   );

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CVDownloadButton } from "@/components/content/CVDownloadButton";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Navigation } from "@/components/layout/Navigation";
 import { Container } from "@/components/ui/Container";
@@ -14,7 +15,10 @@ export function Header() {
         >
           IV
         </Link>
-        <Navigation />
+        <div className="hidden items-center gap-3 md:flex">
+          <Navigation />
+          <CVDownloadButton variant="secondary" />
+        </div>
         <MobileNav />
       </Container>
     </header>

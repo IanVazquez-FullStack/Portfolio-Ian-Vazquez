@@ -49,7 +49,7 @@ development_status:
   1-3-construir-primitivas-ui-reutilizables: done
   1-4-implementar-layout-global-header-footer-y-navegacion-responsive: done
   1-5-implementar-theme-toggle-dark-light-sin-flash: review
-  1-6-anadir-descarga-de-cv-desde-header-about-y-footer: ready-for-dev
+  1-6-anadir-descarga-de-cv-desde-header-about-y-footer: review
   epic-1-retrospective: optional
 
   # ─── Epic 2: Vitrina de Proyectos y Casos Técnicos ──────────────────────────
