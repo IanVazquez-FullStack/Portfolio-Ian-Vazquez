@@ -1,0 +1,25 @@
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --accent: #06b6d4;
+  --accent-hover: #22d3ee;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --success: #22c55e;
+  --error: #ef4444;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --accent: #06b6d4;
+  --accent-hover: #22d3ee;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --border: #334155;
+  --border-hover: #475569;
+  --success: #4ade80;
+  --error: #f87171;
+}

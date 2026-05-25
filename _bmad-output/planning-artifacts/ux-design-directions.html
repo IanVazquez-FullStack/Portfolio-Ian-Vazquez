@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UX Design Directions - Portfolio Ian</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --fg: #f8fafc;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --accent: #06b6d4;
+      --accent-2: #22d3ee;
+      --card: rgba(15, 23, 42, 0.78);
+      --panel: rgba(30, 41, 59, 0.45);
+      --success: #22c55e;
+      --warning: #f59e0b;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, rgba(6, 182, 212, 0.16), transparent 34%), var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(15, 23, 42, 0.72);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; gap: 24px; }
+    .brand { font-weight: 800; letter-spacing: -0.04em; }
+    .brand span { color: var(--accent); }
+    .links { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--muted); }
+    .links a:hover { color: var(--fg); }
+    .intro { padding: 92px 0 56px; }
+    .eyebrow { color: var(--accent-2); font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.16em; text-transform: uppercase; }
+    h1 { font-size: clamp(42px, 7vw, 82px); line-height: 0.98; letter-spacing: -0.07em; margin: 18px 0; max-width: 920px; }
+    .lede { max-width: 720px; color: var(--muted); font-size: 18px; }
+    .grid { display: grid; gap: 28px; }
+    .direction { padding: 76px 0; border-top: 1px solid var(--border); }
+    .direction-head { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 28px; margin-bottom: 28px; align-items: end; }
+    .direction h2 { font-size: clamp(30px, 4vw, 52px); line-height: 1.02; letter-spacing: -0.05em; margin: 8px 0; }
+    .direction p { color: var(--muted); margin: 0; }
+    .mockup {
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      min-height: 520px;
+      background: var(--card);
+      box-shadow: 0 30px 100px rgba(0,0,0,0.28);
+    }
+    .mock-nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid rgba(148, 163, 184, 0.14); color: var(--muted); font-size: 13px; }
+    .mock-body { padding: 38px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(6,182,212,.35); border-radius: 999px; padding: 12px 18px; background: rgba(6,182,212,.1); color: var(--fg); font-weight: 700; font-size: 14px; }
+    .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .pill { display: inline-flex; border: 1px solid rgba(148,163,184,.18); border-radius: 999px; padding: 6px 10px; color: var(--muted); font-size: 12px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+    .card { border: 1px solid rgba(148,163,184,.16); border-radius: 20px; padding: 20px; background: rgba(15,23,42,.56); min-height: 150px; transition: .2s ease; }
+    .card:hover { border-color: rgba(6,182,212,.55); transform: translateY(-3px); }
+    .card h3 { margin: 0 0 8px; letter-spacing: -0.03em; }
+    .card p { font-size: 14px; }
+    .code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: #020617; border: 1px solid rgba(148,163,184,.18); border-radius: 18px; padding: 18px; color: #bae6fd; overflow: auto; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+    .metric { background: rgba(6,182,212,.09); border: 1px solid rgba(6,182,212,.18); border-radius: 16px; padding: 16px; }
+    .metric strong { display: block; font-size: 28px; line-height: 1; }
+    .timeline { display: grid; gap: 14px; margin-top: 24px; }
+    .step { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; }
+    .dot { width: 32px; height: 32px; border-radius: 50%; background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.45); display: grid; place-items: center; color: var(--accent-2); font-weight: 800; }
+    .table { display: grid; gap: 10px; margin-top: 24px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px; align-items: center; padding: 14px 16px; border: 1px solid rgba(148,163,184,.14); border-radius: 14px; background: rgba(15,23,42,.42); }
+    .tag { color: var(--accent-2); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    .evaluation { padding: 72px 0 96px; border-top: 1px solid var(--border); }
+    .checklist { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+    .check { border: 1px solid rgba(148,163,184,.16); border-radius: 18px; padding: 18px; background: rgba(15,23,42,.52); }
+
+    .d2 .mockup { background: linear-gradient(135deg, #020617, #0f172a 54%, rgba(6,182,212,.12)); }
+    .d3 .mockup { background: radial-gradient(circle at 70% 10%, rgba(6,182,212,.22), transparent 32%), #030712; }
+    .d4 .mockup { background: #f8fafc; color: #0f172a; }
+    .d4 .mock-nav, .d4 p { color: #475569; }
+    .d4 .card, .d4 .code { background: white; color: #0f172a; border-color: #e2e8f0; }
+    .d4 .code { color: #0369a1; }
+    .d5 .mockup { background: linear-gradient(180deg, #0f172a, #111827); }
+    .d6 .mockup { background: #020617; }
+
+    @media (max-width: 860px) {
+      .direction-head, .split, .cards, .metric-row, .checklist { grid-template-columns: 1fr; }
+      .mock-body { padding: 24px; }
+      .links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand">Ian<span>.</span>UX Directions</div>
+      <nav class="links">
+        <a href="#d1">Technical Minimal</a>
+        <a href="#d2">Code Narrative</a>
+        <a href="#d3">Vercel Premium</a>
+        <a href="#d4">Editorial</a>
+        <a href="#d5">Case Study</a>
+        <a href="#d6">Dashboard Craft</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro shell">
+      <div class="eyebrow">Portfolio Ian Vazquez · UX Direction Showcase</div>
+      <h1>Seis direcciones visuales para un portfolio full stack que demuestra pensamiento técnico.</h1>
+      <p class="lede">Usá este documento para comparar jerarquía, densidad, tono visual e interacción. La recomendación inicial es combinar <strong>Technical Minimal</strong> + <strong>Code Narrative</strong> + toques de <strong>Vercel Premium</strong>.</p>
+    </section>
+
+    <section id="d1" class="direction shell d1">
+      <div class="direction-head"><div><div class="eyebrow">01</div><h2>Technical Minimal</h2></div><p>Dirección ultra limpia: negative space, tipografía fuerte y micro-interacciones apenas visibles. Ideal para transmitir madurez y control.</p></div>
+      <div class="mockup"><div class="mock-nav"><strong>Ian Vazquez</strong><span>Projects · Writing · Contact</span></div><div class="mock-body"><div class="split"><div><span class="pill">Full Stack Developer</span><h2>Turning messy requirements into fast, documented systems.</h2><p>Casos técnicos con arquitectura, decisiones difíciles y resultados medibles.</p><a class="btn" href="#">Ver proyectos →</a></div><div class="cards"><div class="card"><h3>99</h3><p>Lighthouse performance</p></div><div class="card"><h3>4+</h3><p>Case studies técnicos</p></div><div class="card"><h3>API</h3><p>Contacto full stack real</p></div></div></div></div></div>
+    </section>
+
+    <section id="d2" class="direction shell d2">
+      <div class="direction-head"><div><div class="eyebrow">02</div><h2>Code Narrative</h2></div><p>La narrativa técnica aparece desde el primer frame. Ideal si queremos que los proyectos se lean como evidencia de criterio.</p></div>
+      <div class="mockup"><div class="mock-nav"><strong>case-study.tsx</strong><span>Context · Tradeoffs · Result</span></div><div class="mock-body"><div class="split"><div class="code">const portfolio = {<br/>  promise: "demonstrate thinking",<br/>  proof: ["architecture", "tradeoffs", "backend"],<br/>  outcome: "qualified contact"<br/>}</div><div><span class="pill">Featured case</span><h2>Every project explains the decision behind the interface.</h2><p>Contexto → problema → decisión difícil → arquitectura → lecciones aprendidas.</p></div></div></div></div>
+    </section>
+
+    <section id="d3" class="direction shell d3">
+      <div class="direction-head"><div><div class="eyebrow">03</div><h2>Vercel-inspired Premium</h2></div><p>Look infraestructura moderna: dark, cyan, métricas, cards técnicas. Alto reconocimiento para audiencia dev.</p></div>
+      <div class="mockup"><div class="mock-nav"><strong>Deploy-ready portfolio</strong><span>Vercel · Next.js · Resend</span></div><div class="mock-body"><h2>Full stack proof, deployed.</h2><p>Performance, backend funcional y contenido MDX escalable.</p><div class="metric-row"><div class="metric"><strong>90+</strong><span>Lighthouse</span></div><div class="metric"><strong>&lt;2s</strong><span>LCP target</span></div><div class="metric"><strong>AA</strong><span>Accessibility</span></div></div><div class="cards"><div class="card"><h3>API Contact</h3><p>Resend + validation + anti-spam.</p></div><div class="card"><h3>MDX Content</h3><p>Projects and blog without code edits.</p></div><div class="card"><h3>Motion</h3><p>Meaningful, reduced-motion aware.</p></div></div></div></div>
+    </section>
+
+    <section id="d4" class="direction shell d4">
+      <div class="direction-head"><div><div class="eyebrow">04</div><h2>Editorial Developer</h2></div><p>Más cercano a publicación técnica premium. Funciona bien si el blog y los casos largos son protagonistas.</p></div>
+      <div class="mockup"><div class="mock-nav"><strong>Ian Journal</strong><span>Essays · Builds · Notes</span></div><div class="mock-body"><div class="split"><div><h2>Writing about the decisions that shaped the build.</h2><p>El portfolio se siente como un medio técnico personal: lectura cómoda, jerarquía editorial, casos profundos.</p></div><div class="card"><h3>Latest technical note</h3><p>Why I chose MDX over a CMS for a portfolio that must scale without over-engineering.</p><span class="tag">8 min read</span></div></div></div></div>
+    </section>
+
+    <section id="d5" class="direction shell d5">
+      <div class="direction-head"><div><div class="eyebrow">05</div><h2>Interactive Case Study</h2></div><p>El proyecto se cuenta como historia por etapas. Ideal para reforzar el diferenciador central: decisiones difíciles explicadas.</p></div>
+      <div class="mockup"><div class="mock-nav"><strong>Project story</strong><span>Problem → Decisions → Result</span></div><div class="mock-body"><h2>From ambiguity to architecture.</h2><p>Scroll narrativo con checkpoints visuales y progreso claro.</p><div class="timeline"><div class="step"><div class="dot">1</div><div><strong>Contexto</strong><p>Qué problema existía y para quién.</p></div></div><div class="step"><div class="dot">2</div><div><strong>Tradeoff</strong><p>Qué alternativas se evaluaron y por qué se eligió una.</p></div></div><div class="step"><div class="dot">3</div><div><strong>Resultado</strong><p>Impacto técnico, performance y aprendizaje.</p></div></div></div></div></div>
+    </section>
+
+    <section id="d6" class="direction shell d6">
+      <div class="direction-head"><div><div class="eyebrow">06</div><h2>Dashboard Craft</h2></div><p>El portfolio se siente como una app full stack viva: métricas, estados y componentes funcionales. Demuestra construcción de producto.</p></div>
+      <div class="mockup"><div class="mock-nav"><strong>Portfolio OS</strong><span>Status: available for work</span></div><div class="mock-body"><h2>Technical signal dashboard</h2><p>Enfatiza evidencia operativa: proyectos, métricas, stack, contacto.</p><div class="table"><div class="row"><strong>Featured Project</strong><span>Next.js + API + MDX</span><span class="tag">live</span></div><div class="row"><strong>Contact API</strong><span>Validation + Resend</span><span class="tag">ready</span></div><div class="row"><strong>Blog System</strong><span>Static MDX</span><span class="tag">scalable</span></div></div></div></div>
+    </section>
+
+    <section class="evaluation shell">
+      <div class="eyebrow">Evaluation</div>
+      <h2>Cómo elegir dirección</h2>
+      <p class="lede">Buscá la dirección que más ayude a convertir visitas en contacto sin sacrificar claridad técnica.</p>
+      <div class="checklist">
+        <div class="check"><strong>Layout intuitivo</strong><p>¿Se entiende quién sos y qué hacés en 5 segundos?</p></div>
+        <div class="check"><strong>Profundidad sin densidad</strong><p>¿Permite scan rápido y deep dive técnico?</p></div>
+        <div class="check"><strong>Memorabilidad</strong><p>¿Evita parecer template genérico?</p></div>
+        <div class="check"><strong>Performance percibida</strong><p>¿Se siente liviano y fluido?</p></div>
+        <div class="check"><strong>Escalabilidad</strong><p>¿Funciona con 4 proyectos o con 15?</p></div>
+        <div class="check"><strong>Conversión natural</strong><p>¿El contacto aparece como siguiente paso lógico?</p></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
