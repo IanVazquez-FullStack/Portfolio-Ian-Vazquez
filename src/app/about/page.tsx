@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import { CVDownloadButton } from "@/components/content/CVDownloadButton";
 import { Container } from "@/components/ui/Container";
+import { buildMetadata } from "@/lib/seo/metadata";
+import { personal } from "@/lib/data/personal";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: "Información sobre Ian Vázquez.",
-};
+export const metadata = buildMetadata({
+  title: "Sobre mí",
+  description:
+    `Conoce más sobre ${personal.displayName}: su trayectoria, habilidades y experiencia como desarrollador Full Stack.`,
+});
 
 export default function AboutPage() {
   return (
@@ -14,12 +16,22 @@ export default function AboutPage() {
         <p className="text-caption font-semibold uppercase tracking-wide text-accent">
           About
         </p>
-        <h1 className="mt-3 text-display text-foreground">Sobre Ian</h1>
-        <p className="mt-6 text-body-lg text-muted-foreground">
-          Placeholder semántico para la página About. El contenido definitivo se
-          incorporará en una historia posterior.
-        </p>
-        <CVDownloadButton className="mt-8" />
+        <h1 className="mt-3 text-display text-foreground">
+          Sobre {personal.displayName.split(" ")[0]}
+        </h1>
+
+        <div className="mt-8 flex flex-col gap-10">
+          {personal.bioSections.map((section) => (
+            <div key={section.heading}>
+              <h2 className="text-h2 text-foreground">{section.heading}</h2>
+              <p className="mt-3 text-body-lg text-muted-foreground">
+                {section.content}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <CVDownloadButton className="mt-10" />
       </section>
     </Container>
   );

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigationLinks } from "@/components/layout/Navigation";
+import { personal } from "@/lib/data/personal";
 import {
   Sheet,
   SheetClose,
@@ -42,7 +43,7 @@ export function MobileNav() {
         >
           <div className="flex flex-col gap-6">
             <SheetTitle className="text-h3 font-bold text-foreground">
-              IV
+              {personal.logo}
             </SheetTitle>
             <nav aria-label="Navegación principal móvil">
               <ul className="flex flex-col gap-2 pt-8">

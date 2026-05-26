@@ -79,10 +79,29 @@ src/app/api/contact/
 
 ### Agent Model Used
 
-_pending_
+Cascade (Claude)
 
 ### Debug Log References
 
+- Build inicial falló porque `new Resend(process.env.RESEND_API_KEY)` en top-level causaba "Missing API key" durante `next build` (prerender de /api/contact). Solución: mover la inicialización de Resend dentro de `sendContactEmail` para hacerla lazy y validar `RESEND_API_KEY` antes de instanciar.
+
 ### Completion Notes List
 
+- Instalado `resend` v3.x (`npm install resend`).
+- Creado `src/lib/email/sendContactEmail.ts` con:
+  - Inicialización lazy de `Resend` (dentro de la función, no en top-level).
+  - Validación de `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` y `CONTACT_TO_EMAIL`.
+  - Envío de email con `replyTo: data.email` y subject `[portfolio-ian] ${data.subject}`.
+  - Cuerpo HTML escapado con los 4 campos del formulario.
+  - `try/catch` que loguea errores sin exponer la API key y retorna `{ ok: false, error: 'email_send_failed' }`.
+- Actualizado `src/app/api/contact/route.ts`:
+  - Importa `sendContactEmail`.
+  - Reemplazado `// TODO Story 3.4` por la llamada real.
+  - Si `sendContactEmail` retorna `ok: false`, se loguea el error y se devuelve 500.
+- `.env.example` ya contenía las 4 variables requeridas; no fue necesario modificarlo.
+- Build (`npm run build`) pasa exitosamente.
+
 ### File List
+
+- `src/lib/email/sendContactEmail.ts` (creado)
+- `src/app/api/contact/route.ts` (modificado)

@@ -1,6 +1,6 @@
 # Story 3.2: Construir ContactForm con validación en tiempo real
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -19,23 +19,23 @@ so that pueda contactar a Ian con confianza sin perder datos.
 
 ## Tasks / Subtasks
 
-- [ ] Instalar dependencias si no están: `npm install react-hook-form @hookform/resolvers` (AC: #1)
-- [ ] Crear `src/components/forms/ContactForm.tsx` con `"use client"` (AC: #1)
-  - [ ] `useForm<ContactInput>` con `resolver: zodResolver(contactSchema)`
-  - [ ] Campos: `name`, `email`, `subject`, `message` con labels visibles encima
-  - [ ] Mensajes de error por campo con `aria-describedby` e `id` únicos
-  - [ ] `aria-invalid={!!errors.fieldName}` en cada input
-- [ ] Implementar honeypot `company` (AC: #3)
-  - [ ] Input con `tabindex={-1}`, `autocomplete="off"`, `aria-hidden="true"`, `style={{ position: 'absolute', left: '-9999px' }}`
-- [ ] Implementar `FormStatus` state machine (AC: #5)
-  - [ ] `useState<FormStatus>('idle')`
-  - [ ] Transiciones: `idle → loading → success | error`
-- [ ] Botón "Enviar" con estados (AC: #4)
-  - [ ] `loading`: spinner visible + texto "Enviando..." + `disabled`
-  - [ ] `disabled`: cuando `formStatus === 'loading'`
-- [ ] Cumplir touch targets y contraste (AC: #6)
-  - [ ] `min-h-[44px]` en inputs y botón
-  - [ ] Ring `focus-visible` con color accent
+- [x] Instalar dependencias si no están: `npm install react-hook-form @hookform/resolvers` (AC: #1)
+- [x] Crear `src/components/forms/ContactForm.tsx` con `"use client"` (AC: #1)
+  - [x] `useForm<ContactInput>` con `resolver: zodResolver(contactSchema)`
+  - [x] Campos: `name`, `email`, `subject`, `message` con labels visibles encima
+  - [x] Mensajes de error por campo con `aria-describedby` e `id` únicos
+  - [x] `aria-invalid={!!errors.fieldName}` en cada input
+- [x] Implementar honeypot `company` (AC: #3)
+  - [x] Input con `tabindex={-1}`, `autocomplete="off"`, `aria-hidden="true"`, `style={{ position: 'absolute', left: '-9999px' }}`
+- [x] Implementar `FormStatus` state machine (AC: #5)
+  - [x] `useState<FormStatus>('idle')`
+  - [x] Transiciones: `idle → loading → success | error`
+- [x] Botón "Enviar" con estados (AC: #4)
+  - [x] `loading`: spinner visible + texto "Enviando..." + `disabled`
+  - [x] `disabled`: cuando `formStatus === 'loading'`
+- [x] Cumplir touch targets y contraste (AC: #6)
+  - [x] `min-h-[44px]` en inputs y botón
+  - [x] Ring `focus-visible` con color accent
 
 ## Dev Notes
 
@@ -76,10 +76,26 @@ src/components/forms/
 
 ### Agent Model Used
 
-_pending_
+Cascade
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- ✅ Instaladas dependencias `react-hook-form@7.76.1` y `@hookform/resolvers`
+- ✅ Creado `ContactForm.tsx` como Client Component con RHF + Zod resolver
+- ✅ Labels visibles sobre cada input (UX-DR5), sin placeholders sustitutivos
+- ✅ Validación `mode: 'onBlur'` con mensajes de error asociados vía `aria-invalid` + `aria-describedby` (UX-DR9)
+- ✅ Honeypot `company` con `tabindex={-1}`, `autocomplete="off"`, posicionado fuera de pantalla (FR-10)
+- ✅ `FormStatus` state machine gestionado localmente: idle → loading → success | error (AR-09)
+- ✅ Botón "Enviar" con estados `idle`/`loading`/`success`/`error`, spinner y disabled durante envío (UX-DR15, UX-DR13)
+- ✅ Inputs y botón con `min-h-11` (44px), `focus-visible:ring-2` con color accent
+- ✅ Tests unitarios con 9 casos cubriendo render, a11y, honeypot, validación, estados de envío y touch targets
+- ✅ Lint pasa sin errores. Build tiene error pre-existente en MDX loader (no relacionado con esta historia).
+
 ### File List
+
+- `src/components/forms/ContactForm.tsx` — Componente principal (creado)
+- `src/components/forms/ContactForm.test.tsx` — Tests unitarios (creado)
+- `vitest.config.ts` — Añadido `environment: "jsdom"` (modificado)
+- `package.json` / `package-lock.json` — Dependencias `react-hook-form` y `@hookform/resolvers` (modificado)

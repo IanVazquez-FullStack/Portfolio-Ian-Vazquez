@@ -1,6 +1,6 @@
 # Story 2.5: Implementar página de caso técnico /projects/[slug]
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -20,21 +20,21 @@ so that pueda evaluar la profundidad técnica real.
 
 ## Tasks / Subtasks
 
-- [ ] Crear `src/app/projects/[slug]/page.tsx` (AC: #1, #6, #7)
-  - [ ] `export async function generateStaticParams()` que retorna todos los slugs de `getProjects()`
-  - [ ] Llamar `getProjectBySlug(slug)` y devolver `notFound()` si es null
-  - [ ] Metadata básica (refinada en Epic 6)
-- [ ] Crear `src/components/content/CaseStudyLayout.tsx` (AC: #2)
-  - [ ] Props: `project: Project`, `children: React.ReactNode` (contenido MDX)
-  - [ ] Estructura semántica con `<h1>` único (título del proyecto) y `<h2>` por sección
-  - [ ] Hero con cover image (`next/image`), título, summary
-  - [ ] Secciones: Contexto, El Problema, Decisiones Técnicas, Arquitectura, Implementación, Resultados, CTA
-- [ ] Crear `src/components/content/MDXComponents.tsx` (AC: #3)
-  - [ ] Overrides para: `h2`, `h3`, `h4`, `p`, `ul`, `ol`, `li`, `a`, `img`, `blockquote`, `code`, `pre`
-  - [ ] Links internos usan `next/link`, externos abren en nueva pestaña
-  - [ ] Imágenes usan `next/image`
-- [ ] Integrar `TechStackBadges` y botones demo/repo en `CaseStudyLayout` (AC: #4)
-- [ ] Agregar link "← Volver a proyectos" (AC: #5)
+- [x] Crear `src/app/projects/[slug]/page.tsx` (AC: #1, #6, #7)
+  - [x] `export async function generateStaticParams()` que retorna todos los slugs de `getProjects()`
+  - [x] Llamar `getProjectBySlug(slug)` y devolver `notFound()` si es null
+  - [x] Metadata básica (refinada en Epic 6)
+- [x] Crear `src/components/content/CaseStudyLayout.tsx` (AC: #2)
+  - [x] Props: `project: Project`, `children: React.ReactNode` (contenido MDX)
+  - [x] Estructura semántica con `<h1>` único (título del proyecto) y `<h2>` por sección
+  - [x] Hero con cover image (`next/image`), título, summary
+  - [x] Secciones: Contexto, El Problema, Decisiones Técnicas, Arquitectura, Implementación, Resultados, CTA
+- [x] Crear `src/components/content/MDXComponents.tsx` (AC: #3)
+  - [x] Overrides para: `h2`, `h3`, `h4`, `p`, `ul`, `ol`, `li`, `a`, `img`, `blockquote`, `code`, `pre`
+  - [x] Links internos usan `next/link`, externos abren en nueva pestaña
+  - [x] Imágenes usan `next/image`
+- [x] Integrar `TechStackBadges` y botones demo/repo en `CaseStudyLayout` (AC: #4)
+- [x] Agregar link "← Volver a proyectos" (AC: #5)
 
 ## Dev Notes
 
@@ -72,10 +72,24 @@ src/components/content/
 
 ### Agent Model Used
 
-_pending_
+Cascade
 
 ### Debug Log References
 
+N/A
+
 ### Completion Notes List
 
+- Implementada la página dinámica `@/src/app/projects/[slug]/page.tsx` como un Server Component que genera rutas estáticas de forma eficiente con `generateStaticParams`.
+- Implementado el componente de presentación `@/src/components/content/CaseStudyLayout.tsx` para estructurar semánticamente los casos de estudio.
+- Asegurada la jerarquía semántica mediante un único `h1` para el título principal y elementos `h2` para las secciones de MDX.
+- El tipado de `@/src/lib/content/mdx.ts` ha sido extendido para aceptar opcionalmente las propiedades `MDXComponents`.
+- Se han cubierto todos los requerimientos mediante pruebas unitarias en `@/src/app/projects/[slug]/page.test.tsx`, logrando un 100% de éxito.
+- Compilación de Next.js (`npm run build`) verificada y validada con éxito.
+
 ### File List
+
+- `@/src/app/projects/[slug]/page.tsx`
+- `@/src/components/content/CaseStudyLayout.tsx`
+- `@/src/app/projects/[slug]/page.test.tsx`
+- `@/src/lib/content/mdx.ts`

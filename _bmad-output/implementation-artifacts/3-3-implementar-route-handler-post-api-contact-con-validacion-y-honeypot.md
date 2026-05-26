@@ -1,6 +1,6 @@
 # Story 3.3: Implementar Route Handler POST /api/contact con validación y honeypot
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -19,20 +19,20 @@ so that el backend sea seguro y consistente sin filtrar detalles (NFR-03, FR-08,
 
 ## Tasks / Subtasks
 
-- [ ] Crear `src/app/api/contact/route.ts` (AC: #1, #2, #3, #4, #5)
-  - [ ] Exportar solo `POST` (y métodos para `405`)
-  - [ ] Parsear body: `const body = await req.json()`
-  - [ ] Validar: `const result = contactSchema.safeParse(body)`
-  - [ ] Si `!result.success` → `fail(...)` con `fieldErrors` y status 400
-  - [ ] Si `result.data.company` (honeypot) → `ok()` silencioso sin email
-  - [ ] En éxito real → llamar `sendContactEmail()` (se implementa en Story 3.4; mock/skip aquí)
-  - [ ] `try/catch` con `console.error` y `fail("No pude enviar...", undefined, 500)` al cliente
-- [ ] Exportar handlers `GET`, `PUT`, `DELETE`, `PATCH` que retornen 405 (AC: #3)
-- [ ] Generar ID de request para logging (AC: #4)
-  - [ ] `const requestId = crypto.randomUUID()`
-  - [ ] Incluir en logs: `console.error('[contact]', requestId, error)`
-- [ ] Crear test para el endpoint (AC: #6)
-  - [ ] `src/app/api/contact/route.test.ts` o test E2E en `tests/e2e/contact.spec.ts`
+- [x] Crear `src/app/api/contact/route.ts` (AC: #1, #2, #3, #4, #5)
+  - [x] Exportar solo `POST` (y métodos para `405`)
+  - [x] Parsear body: `const body = await req.json()`
+  - [x] Validar: `const result = contactSchema.safeParse(body)`
+  - [x] Si `!result.success` → `fail(...)` con `fieldErrors` y status 400
+  - [x] Si `result.data.company` (honeypot) → `ok()` silencioso sin email
+  - [x] En éxito real → placeholder para `sendContactEmail()` (Story 3.4)
+  - [x] `try/catch` con `console.error` y `fail("No pude enviar...", undefined, 500)` al cliente
+- [x] Exportar handlers `GET`, `PUT`, `DELETE`, `PATCH` que retornen 405 (AC: #3)
+- [x] Generar ID de request para logging (AC: #4)
+  - [x] `const requestId = crypto.randomUUID()`
+  - [x] Incluir en logs: `console.error('[contact]', requestId, error)`
+- [x] Crear test para el endpoint (AC: #6)
+  - [x] `src/app/api/contact/route.test.ts` con tests unitarios
 
 ## Dev Notes
 
@@ -72,10 +72,31 @@ src/app/api/contact/
 
 ### Agent Model Used
 
-_pending_
+Claude 3.7 Sonnet
 
 ### Debug Log References
 
+- Mock de `contactSchema.safeParse` utilizado para testear errores internos (500), ya que el error de `req.json()` se captura silenciosamente como 400 JSON inválido.
+- Linter flag por `any` en helper de test, resuelto con `Record<string, unknown>`.
+
 ### Completion Notes List
 
+1. ✅ Se creó `src/app/api/contact/route.ts` con handler `POST` que:
+   - Parsea el body JSON con manejo de error 400 para JSON inválido.
+   - Valida con `contactSchema.safeParse()` y retorna 400 con `fieldErrors`.
+   - Implementa honeypot silencioso (`company`) retornando 200 ok sin procesar email.
+   - Usa `crypto.randomUUID()` para `requestId` en logs de error.
+   - Loguea errores con `console.error('[contact]', requestId, error)` y retorna mensaje genérico al cliente con status 500.
+2. ✅ Handlers `GET`, `PUT`, `DELETE`, `PATCH` retornan 405 con cabecera `Allow: POST`.
+3. ✅ Tests unitarios en `route.test.ts` cubren: input válido → 200, input inválido → 400 con fieldErrors, honeypot → 200 sin email, error interno → 500 con mensaje genérico, GET/PUT/DELETE/PATCH → 405.
+4. ✅ El route handler no importa componentes UI ni módulos client-only (solo `@/lib/validation/contactSchema` y `@/lib/api/responses`).
+
 ### File List
+
+- `src/app/api/contact/route.ts` — nuevo
+- `src/app/api/contact/route.test.ts` — nuevo
+
+### Change Log
+
+- Implementación del handler `POST /api/contact` con validación Zod, honeypot y respuestas estándar
+- Tests unitarios del endpoint de contacto (9 casos de prueba)

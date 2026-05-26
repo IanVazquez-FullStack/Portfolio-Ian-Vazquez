@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
 type CodeBlockProps = HTMLAttributes<HTMLPreElement> & {
-  children: ReactNode;
+  children?: ReactNode;
   language?: string;
 };
 
@@ -11,9 +11,9 @@ function joinClasses(...classes: Array<string | undefined>) {
 
 export function CodeBlock({ children, language, className, ...props }: CodeBlockProps) {
   return (
-    <div className="rounded-3xl border border-border bg-slate-950 text-slate-50">
+    <div className="my-6 overflow-hidden rounded-lg border border-border">
       {language ? (
-        <div className="border-b border-slate-800 px-5 py-3 font-mono text-caption text-slate-300">
+        <div className="border-b border-border bg-muted px-4 py-2 font-mono text-xs text-muted-foreground">
           {language}
         </div>
       ) : null}
@@ -21,11 +21,11 @@ export function CodeBlock({ children, language, className, ...props }: CodeBlock
         {...props}
         tabIndex={0}
         className={joinClasses(
-          "overflow-x-auto p-5 font-mono text-code outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          "overflow-x-auto bg-muted p-4 font-mono text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           className,
         )}
       >
-        <code>{children}</code>
+        {children}
       </pre>
     </div>
   );

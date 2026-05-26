@@ -1,6 +1,6 @@
 # Story 4.2: Configurar pipeline MDX con syntax highlighting y MDXComponents
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -17,20 +17,20 @@ so that pueda leer contenido técnico cómodamente.
 
 ## Tasks / Subtasks
 
-- [ ] Elegir e instalar highlighter: `rehype-pretty-code` + `shiki` (AC: #1)
-  - [ ] `npm install rehype-pretty-code shiki`
-  - [ ] Configurar en `src/lib/content/mdx.ts` como plugin rehype
-- [ ] Actualizar `next.config.js/ts` para MDX si no está configurado desde Story 2.1 (AC: #1)
-- [ ] Crear/actualizar `src/components/content/MDXComponents.tsx` (AC: #2, #3)
-  - [ ] Override `h1`: renderizar como `h2` (prevenir duplicado de h1)
-  - [ ] `h2`, `h3`, `h4`: estilos tipográficos consistentes con tokens
-  - [ ] `a`: si href empieza con `/` → `next/link`; si no → `<a target="_blank" rel="noopener noreferrer">`
-  - [ ] `img`: `next/image` con `width`, `height`, `alt`
-  - [ ] `pre`/`code`: integrar con `CodeBlock` o renderizar con clases de shiki
-  - [ ] `blockquote`: estilo con border-left accent
-- [ ] Crear post de prueba `src/content/blog/test-mdx-features.mdx` con draft: true (AC: #4)
-  - [ ] Incluir: heading h2/h3, párrafo, lista, link interno `/projects`, link externo, image, code inline, code block `ts` y `bash`
-- [ ] Verificar que renderiza sin errores (AC: #4)
+- [x] Elegir e instalar highlighter: `rehype-pretty-code` + `shiki` (AC: #1)
+  - [x] `npm install rehype-pretty-code shiki`
+  - [x] Configurar en `src/lib/content/mdx.ts` como plugin rehype
+- [x] Actualizar `next.config.ts` para MDX si no está configurado desde Story 2.1 (AC: #1)
+- [x] Crear/actualizar `src/components/content/MDXComponents.tsx` (AC: #2, #3)
+  - [x] Override `h1`: renderizar como `h2` (prevenir duplicado de h1)
+  - [x] `h2`, `h3`, `h4`: estilos tipográficos consistentes con tokens
+  - [x] `a`: si href empieza con `/` → `next/link`; si no → `<a target="_blank" rel="noopener noreferrer">`
+  - [x] `img`: `next/image` con `width`, `height`, `alt`
+  - [x] `pre`/`code`: integrar con `CodeBlock` o renderizar con clases de shiki
+  - [x] `blockquote`: estilo con border-left accent
+- [x] Crear post de prueba `src/content/blog/test-mdx-features.mdx` con draft: true (AC: #4)
+  - [x] Incluir: heading h2/h3, párrafo, lista, link interno `/projects`, link externo, image, code inline, code block `ts` y `bash`
+- [x] Verificar que renderiza sin errores (AC: #4)
 
 ## Dev Notes
 
@@ -76,10 +76,28 @@ src/content/blog/
 
 ### Agent Model Used
 
-_pending_
+Cascade
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Instalado `rehype-pretty-code` y `shiki` como highlighter server-side.
+- Implementado `compileMdx()` en `src/lib/content/mdx.ts` usando `@mdx-js/mdx` con `outputFormat: 'function-body'` y `rehype-pretty-code` como plugin rehype.
+- Creado `src/components/content/MDXComponents.tsx` con overrides para todos los elementos de contenido (`h1`→`h2`, `h2-h4`, `p`, `ul/ol`, `li`, `a`, `img`, `blockquote`, `code`, `pre`).
+- Actualizado `src/components/ui/CodeBlock.tsx` para envolver bloques de código sin duplicar `<code>`.
+- Actualizado `src/mdx-components.tsx` para exponer `MDXComponents` a `@next/mdx`.
+- Agregado CSS en `globals.css` para alternar colores shiki entre light/dark usando `.dark`.
+- Creado post de prueba `src/content/blog/test-mdx-features.mdx` con `draft: true` ejercitando todos los elementos MDX.
+- Creado tests en `src/lib/content/mdx.test.tsx` verificando compilación, syntax highlighting y renderizado de elementos.
+- Nota: `rehype-pretty-code` no se agregó a `next.config.ts` porque Next.js 16 con Turbopack no soporta plugins rehype con funciones no serializables. El pipeline server-side en `mdx.ts` cubre todo el contenido dinámico.
+
 ### File List
+
+- `src/lib/content/mdx.ts`
+- `src/components/content/MDXComponents.tsx`
+- `src/components/ui/CodeBlock.tsx`
+- `src/mdx-components.tsx`
+- `src/app/globals.css`
+- `src/content/blog/test-mdx-features.mdx`
+- `src/lib/content/mdx.test.tsx`

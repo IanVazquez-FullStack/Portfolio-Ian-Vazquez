@@ -61,10 +61,19 @@ src/app/
 
 ### Agent Model Used
 
-_pending_
+Claude (Cascade)
 
 ### Debug Log References
 
+- Pre-existing MDX loader build error in `next.config.ts` unrelated to this story. `tsc --noEmit` and `eslint` pass cleanly for both new files. Dev server confirmed `GET /robots.txt 200` before the unrelated MDX crash.
+
 ### Completion Notes List
 
+- `robots.ts` exports `MetadataRoute.Robots` with `userAgent: '*', allow: '/'` and references `${SITE_URL}/sitemap.xml`.
+- `sitemap.ts` exports async `MetadataRoute.Sitemap` with static routes (`/`, `/about`, `/contact`, `/projects`, `/blog`) using `new Date()` for `lastModified`, plus dynamic routes from `getProjects()` and `getBlogPosts()` (drafts excluded automatically) using `new Date(publishedAt)`.
+- Both files placed at `src/app/robots.ts` and `src/app/sitemap.ts` per Next.js App Router metadata routes convention.
+
 ### File List
+
+- `src/app/robots.ts`
+- `src/app/sitemap.ts`

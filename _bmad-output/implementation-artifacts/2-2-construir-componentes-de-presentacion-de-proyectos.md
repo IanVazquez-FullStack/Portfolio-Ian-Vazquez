@@ -1,6 +1,6 @@
 # Story 2.2: Construir componentes de presentación de proyectos
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -19,22 +19,22 @@ so that Home, listado y detalle se compongan de forma consistente.
 
 ## Tasks / Subtasks
 
-- [ ] Crear `src/components/content/ProjectCard.tsx` (AC: #1, #2)
-  - [ ] Recibe prop `project: Project`
-  - [ ] `next/image` con `width`, `height`, `alt` y `sizes` responsive
-  - [ ] Link único accesible: `<Link href={/projects/${project.slug}}>` envolviendo la card
-  - [ ] Stack resumido (primeras 3 tecnologías) con `Badge` compact
-  - [ ] Hover/focus: revelar stack completo y descripción del tipo de problema
-- [ ] Crear `src/components/content/TechStackBadges.tsx` (AC: #3)
-  - [ ] Props: `stack: string[]`, `variant: 'compact' | 'detailed' | 'grouped'`
-  - [ ] Reutiliza `Badge` de `src/components/ui/`
-- [ ] Crear `src/components/content/MetricCard.tsx` (AC: #4)
-  - [ ] Props: `value: string`, `label: string`, `context?: string`
-  - [ ] No usar color como único diferenciador semántico
-- [ ] Crear `src/components/content/ArchitectureDiagram.tsx` (AC: #5)
-  - [ ] Wraps imagen/SVG con `role="img"`, `aria-label` y `aria-describedby`
-  - [ ] Descripción textual accesible siempre presente
-- [ ] Verificar que todos son Server Components salvo necesidad real de interactividad (AC: #6)
+- [x] Crear `src/components/content/ProjectCard.tsx` (AC: #1, #2)
+  - [x] Recibe prop `project: Project`
+  - [x] `next/image` con `width`, `height`, `alt` y `sizes` responsive
+  - [x] Link único accesible: `<Link href={/projects/${project.slug}}>` envolviendo la card
+  - [x] Stack resumido (primeras 3 tecnologías) con `Badge` compact
+  - [x] Hover/focus: revelar stack completo y descripción del tipo de problema
+- [x] Crear `src/components/content/TechStackBadges.tsx` (AC: #3)
+  - [x] Props: `stack: string[]`, `variant: 'compact' | 'detailed' | 'grouped'`
+  - [x] Reutiliza `Badge` de `src/components/ui/`
+- [x] Crear `src/components/content/MetricCard.tsx` (AC: #4)
+  - [x] Props: `value: string`, `label: string`, `context?: string`
+  - [x] No usar color como único diferenciador semántico
+- [x] Crear `src/components/content/ArchitectureDiagram.tsx` (AC: #5)
+  - [x] Wraps imagen/SVG con `role="img"`, `aria-label` y `aria-describedby`
+  - [x] Descripción textual accesible siempre presente
+- [x] Verificar que todos son Server Components salvo necesidad real de interactividad (AC: #6)
 
 ## Dev Notes
 
@@ -66,10 +66,23 @@ src/components/content/
 
 ### Agent Model Used
 
-_pending_
+Claude
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Implementados 4 componentes de presentación en `src/components/content/`:
+  - `TechStackBadges`: variantes compact/detailed/grouped, reutiliza Badge, mapeo semántico de tecnologías a variantes de color.
+  - `ProjectCard`: Server Component, next/image con sizes responsive, Link accesible único, hover/focus reveal con group-hover/group-focus-within.
+  - `MetricCard`: muestra valor/label/contexto, accesible sin depender solo del color.
+  - `ArchitectureDiagram`: figure con next/image, role="img", aria-describedby, descripción textual visible siempre.
+- Todos los componentes son Server Components (sin "use client").
+- Lint y build pasan sin errores.
+
 ### File List
+
+- `src/components/content/TechStackBadges.tsx`
+- `src/components/content/ProjectCard.tsx`
+- `src/components/content/MetricCard.tsx`
+- `src/components/content/ArchitectureDiagram.tsx`

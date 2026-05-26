@@ -1,6 +1,6 @@
 # Story 4.1: Definir schema de posts y loader MDX para blog
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -68,10 +68,40 @@ src/lib/utils/
 
 ### Agent Model Used
 
-_pending_
+Claude (Cascade)
 
 ### Debug Log References
 
+- `npm run build`: exitoso (static pages generadas correctamente)
+- `tsc --noEmit`: falla en archivos preexistentes (`responses.test.ts`, `contactSchema.test.ts`), no en archivos nuevos de esta story
+- `node --test src/lib/content/getBlogPosts.test.ts`: falla por path aliases no resueltos (mismo comportamiento que `getProjects.test.ts` preexistente)
+
 ### Completion Notes List
 
+- `postSchema` agregado a `src/lib/content/schemas.ts` junto a `projectSchema`, con validación de kebab-case, ISO 8601, tags array y draft default false
+- `BlogPost` type enriquecido con `readingTime: number` (campo calculado)
+- `getBlogPosts()` implementado en `src/lib/content/getBlogPosts.ts` — filtra drafts en producción, ordena desc por `publishedAt`, reutiliza patrón de `getProjects.ts`
+- `getBlogPostBySlug(slug)` devuelve post + contenido MDX o `null`
+- `readingTime.ts` calcula `Math.ceil(words / 200)` con mínimo 1 min
+- `formatDate.ts` usa `Intl.DateTimeFormat('es-AR', ...)` para fechas en español
+- Post de ejemplo creado en `src/content/blog/hola-mundo.mdx`
+- Tests unitarios creados en `getBlogPosts.test.ts` (paralelos a `getProjects.test.ts`)
+
 ### File List
+
+- `src/lib/content/schemas.ts`
+- `src/lib/content/getBlogPosts.ts`
+- `src/lib/content/getBlogPosts.test.ts`
+- `src/lib/utils/readingTime.ts`
+- `src/lib/utils/formatDate.ts`
+- `src/content/blog/hola-mundo.mdx`
+
+### Review Findings
+
+- [x] [Review][Patch] `getBlogPostBySlug` no filtra drafts en producción — **Fixed**: agregado check `isProduction && post.draft` en `getBlogPostBySlug`. [`src/lib/content/getBlogPosts.ts:77-79`]
+- [x] [Review][Patch] `readingTime` con texto vacío o solo whitespace devuelve 1 minuto — **Fixed**: manejado caso `trimmed.length === 0` antes de `split()`. [`src/lib/utils/readingTime.ts:3`]
+- [x] [Review][Patch] `formatDate` lanza `RangeError` si `dateString` es inválido — **Fixed**: agregado `isNaN(date.getTime())` check con throw explícito. [`src/lib/utils/formatDate.ts:3-5`]
+- [x] [Review][Patch] Expresión lógica confusa en filtro de drafts — **Fixed**: refactorizado a bloque explícito `if (!isProduction) return true; return !post.draft;`. [`src/lib/content/getBlogPosts.ts:57-60`]
+- [x] [Review][Patch] Test de `getBlogPosts()` no verifica campo `content` — **Fixed**: agregado `assert.equal(typeof posts[0]?.content, "string")`. [`src/lib/content/getBlogPosts.test.ts:56`]
+- [x] [Review][Patch] No hay test de `draft: true` explícito en schema tests — **Fixed**: agregado test `accepts explicit draft: true`. [`src/lib/content/getBlogPosts.test.ts:35-47`]
+- [x] [Review][Defer] `tsc --noEmit` falla en tests preexistentes — `responses.test.ts`, `contactSchema.test.ts` causan errores de tipo no relacionados con esta story. [`varios`] — deferred, pre-existing

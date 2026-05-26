@@ -1,6 +1,6 @@
 # Story 2.1: Definir schema de contenido de proyectos y loader MDX
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -19,19 +19,19 @@ so that pueda agregar proyectos como archivos `.mdx` sin modificar lógica (FR-0
 
 ## Tasks / Subtasks
 
-- [ ] Instalar dependencias MDX necesarias (AC: #2, #3)
-  - [ ] `@next/mdx`, `@mdx-js/react`, `remark-frontmatter`, `remark-mdx-frontmatter`, `gray-matter` — evaluar qué combinación no usa `next-mdx-remote`
-- [ ] Crear `src/lib/content/schemas.ts` con `projectSchema` Zod (AC: #1)
-  - [ ] Campos: `title`, `slug`, `summary`, `publishedAt`, `featured`, `stack`, `demoUrl?`, `repoUrl?`, `coverImage`
-  - [ ] Exportar `Project = z.infer<typeof projectSchema>`
-- [ ] Crear `src/lib/content/mdx.ts` con helpers de parsing MDX (AC: #2, #3)
-- [ ] Crear `src/lib/content/getProjects.ts` (AC: #2, #3)
-  - [ ] `getProjects()`: lee directorio, parsea frontmatter, valida con Zod, ordena por `publishedAt` desc
-  - [ ] `getProjectBySlug(slug)`: busca por slug, retorna con contenido MDX o `null`
-- [ ] Configurar `next.config.js` para soporte MDX si necesario (AC: #2)
-- [ ] Crear `src/content/projects/portfolio-ian.mdx` con frontmatter completo válido (AC: #5)
-- [ ] Verificar que frontmatter inválido produce error claro (AC: #4)
-- [ ] Ejecutar `npm run build` y `tsc --noEmit` (AC: #6)
+- [x] Instalar dependencias MDX necesarias (AC: #2, #3)
+  - [x] `@next/mdx`, `@mdx-js/react`, `remark-frontmatter`, `remark-mdx-frontmatter`, `gray-matter` — evaluar qué combinación no usa `next-mdx-remote`
+- [x] Crear `src/lib/content/schemas.ts` con `projectSchema` Zod (AC: #1)
+  - [x] Campos: `title`, `slug`, `summary`, `publishedAt`, `featured`, `stack`, `demoUrl?`, `repoUrl?`, `coverImage`
+  - [x] Exportar `Project = z.infer<typeof projectSchema>`
+- [x] Crear `src/lib/content/mdx.ts` con helpers de parsing MDX (AC: #2, #3)
+- [x] Crear `src/lib/content/getProjects.ts` (AC: #2, #3)
+  - [x] `getProjects()`: lee directorio, parsea frontmatter, valida con Zod, ordena por `publishedAt` desc
+  - [x] `getProjectBySlug(slug)`: busca por slug, retorna con contenido MDX o `null`
+- [x] Configurar `next.config.js` para soporte MDX si necesario (AC: #2)
+- [x] Crear `src/content/projects/portfolio-ian.mdx` con frontmatter completo válido (AC: #5)
+- [x] Verificar que frontmatter inválido produce error claro (AC: #4)
+- [x] Ejecutar `npm run build` y `tsc --noEmit` (AC: #6)
 
 ## Dev Notes
 
@@ -75,10 +75,35 @@ src/content/projects/
 
 ### Agent Model Used
 
-_pending_
+Cascade
 
 ### Debug Log References
 
+- `npm run lint && npx tsc --noEmit && npm run build` — passed.
+
 ### Completion Notes List
 
+- Se instalaron dependencias MDX oficiales de Next y `gray-matter`/`zod`; no se usó `next-mdx-remote`.
+- Se implementó `projectSchema` con validación de slug kebab-case, fecha ISO, campos obligatorios/opcionales y tipos inferidos.
+- Se implementaron helpers server-side para parsear frontmatter MDX, listar proyectos ordenados por `publishedAt` descendente y obtener un proyecto por slug.
+- Se agregó contenido seed `portfolio-ian.mdx` con frontmatter válido.
+- Se agregó configuración MDX en Next y `src/mdx-components.tsx` requerido por App Router.
+- Se agregó test co-localizado para schema y loaders; la validación final del repo pasó con lint, typecheck y build.
+
 ### File List
+
+- `_bmad-output/implementation-artifacts/2-1-definir-schema-de-contenido-de-proyectos-y-loader-mdx.md`
+- `_bmad-output/implementation-artifacts/sprint-status.yaml`
+- `next.config.ts`
+- `package-lock.json`
+- `package.json`
+- `src/content/projects/portfolio-ian.mdx`
+- `src/lib/content/getProjects.test.ts`
+- `src/lib/content/getProjects.ts`
+- `src/lib/content/mdx.ts`
+- `src/lib/content/schemas.ts`
+- `src/mdx-components.tsx`
+
+### Change Log
+
+- 2026-05-25: Implementada historia 2.1 completa y lista para review.

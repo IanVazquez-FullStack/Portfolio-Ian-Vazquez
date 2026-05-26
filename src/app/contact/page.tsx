@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
+import { buildMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contacto de Ian Vázquez.",
-};
+export const metadata = buildMetadata({
+  title: "Contacto",
+  description:
+    "Ponte en contacto con Ian Vázquez. Envía un mensaje o consulta para colaborar en tu próximo proyecto.",
+});
 
 export default function ContactPage() {
   return (

@@ -1,6 +1,6 @@
 # Story 5.1: Centralizar variants de motion y wrappers reutilizables
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -19,22 +19,22 @@ so that las animaciones sean consistentes y respeten `prefers-reduced-motion` si
 
 ## Tasks / Subtasks
 
-- [ ] Instalar Framer Motion si no está presente: `npm install framer-motion` (AC: #6)
-- [ ] Crear `src/lib/motion/variants.ts` (AC: #1)
-  - [ ] `fadeIn`: `{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5 } } }`
-  - [ ] `slideUp`: `{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }`
-  - [ ] `stagger`: `{ visible: { transition: { staggerChildren: 0.1 } } }` (100ms entre hijos)
-  - [ ] Solo animar `transform` y `opacity` — nunca `width`, `height`, `top`, etc.
-- [ ] Crear `src/components/motion/AnimatedSection.tsx` con `"use client"` (AC: #2, #4, #5)
-  - [ ] `useReducedMotion()` de Framer Motion
-  - [ ] Si `reducedMotion === true` → renderizar children directamente sin animación
-  - [ ] `whileInView` + `viewport={{ once: true, amount: 0.2 }}`
-  - [ ] Props: `children`, `delay?: number`, `as?: keyof JSX.IntrinsicElements` (default `'div'`)
-- [ ] Crear `src/components/motion/StaggeredGrid.tsx` con `"use client"` (AC: #3, #4, #5)
-  - [ ] `useReducedMotion()` → sin animación si `true`
-  - [ ] Variante `stagger` aplicada al contenedor
-  - [ ] Hijos directos reciben variante `slideUp` automáticamente
-  - [ ] Props: `children`, `as?: keyof JSX.IntrinsicElements` (default `'div'`)
+- [x] Instalar Framer Motion si no está presente: `npm install framer-motion` (AC: #6)
+- [x] Crear `src/lib/motion/variants.ts` (AC: #1)
+  - [x] `fadeIn`: `{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5 } } }`
+  - [x] `slideUp`: `{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }`
+  - [x] `stagger`: `{ visible: { transition: { staggerChildren: 0.1 } } }` (100ms entre hijos)
+  - [x] Solo animar `transform` y `opacity` — nunca `width`, `height`, `top`, etc.
+- [x] Crear `src/components/motion/AnimatedSection.tsx` con `"use client"` (AC: #2, #4, #5)
+  - [x] `useReducedMotion()` de Framer Motion
+  - [x] Si `reducedMotion === true` → renderizar children directamente sin animación
+  - [x] `whileInView` + `viewport={{ once: true, amount: 0.2 }}`
+  - [x] Props: `children`, `delay?: number`, `as?: keyof React.JSX.IntrinsicElements` (default `'div'`)
+- [x] Crear `src/components/motion/StaggeredGrid.tsx` con `"use client"` (AC: #3, #4, #5)
+  - [x] `useReducedMotion()` → sin animación si `true`
+  - [x] Variante `stagger` aplicada al contenedor
+  - [x] Hijos directos reciben variante `slideUp` automáticamente
+  - [x] Props: `children`, `as?: keyof React.JSX.IntrinsicElements` (default `'div'`)
 
 ## Dev Notes
 
@@ -70,10 +70,23 @@ src/components/motion/
 
 ### Agent Model Used
 
-_pending_
+Cascade (Claude)
 
 ### Debug Log References
 
+- Fixed TypeError `Cannot find namespace 'JSX'` by switching to `React.JSX.IntrinsicElements` for React 19 compatibility.
+- Fixed TypeError `Type 'Variant | undefined' is not assignable to type 'Variant'` by inlining variant objects directly in component props instead of spreading from `variants.ts` exports.
+
 ### Completion Notes List
 
+- Framer Motion v12.40.0 already installed (no additional dependency needed).
+- Created `src/lib/motion/variants.ts` exporting `fadeIn`, `slideUp`, `stagger`.
+- Created `src/components/motion/AnimatedSection.tsx` with `useReducedMotion`, `whileInView`, `delay`, and `as` prop.
+- Created `src/components/motion/StaggeredGrid.tsx` with `useReducedMotion`, stagger container, and `StaggeredItem` helper.
+- Build verified successfully (`next build` passes with no errors).
+
 ### File List
+
+- `src/lib/motion/variants.ts`
+- `src/components/motion/AnimatedSection.tsx`
+- `src/components/motion/StaggeredGrid.tsx`

@@ -3,6 +3,7 @@ import { CVDownloadButton } from "@/components/content/CVDownloadButton";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { Navigation } from "@/components/layout/Navigation";
 import { Container } from "@/components/ui/Container";
+import { personal } from "@/lib/data/personal";
 
 export function Header() {
   return (
@@ -13,7 +14,7 @@ export function Header() {
           className="inline-flex min-h-11 items-center rounded-full text-h3 font-bold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           aria-label="Ir al inicio"
         >
-          IV
+          {personal.logo}
         </Link>
         <div className="hidden items-center gap-3 md:flex">
           <Navigation />

@@ -1,0 +1,49 @@
+---
+title: "Test MDX Features"
+slug: "test-mdx-features"
+summary: "Post de prueba para verificar que todos los elementos MDX renderizan correctamente."
+publishedAt: "2026-05-25T00:00:00Z"
+tags: ["test", "mdx"]
+draft: true
+---
+
+## Heading de nivel 2
+
+Este es un párrafo de prueba. Debe renderizarse con la tipografía del sistema de diseño y buen interlineado.
+
+### Heading de nivel 3
+
+- Primer elemento de lista
+- Segundo elemento de lista
+- Tercer elemento de lista
+
+1. Lista ordenada, primer ítem
+2. Lista ordenada, segundo ítem
+
+[Link interno a proyectos](/projects)
+
+[Link externo a Next.js](https://nextjs.org)
+
+![Imagen de prueba](/file.svg)
+
+> Esto es un blockquote. Debe tener el borde izquierdo de color accent y fondo sutil.
+
+Este párrafo incluye `código inline` para verificar estilos tipográficos.
+
+```ts
+// Bloque de código TypeScript
+interface User {
+  id: string;
+  name: string;
+}
+
+function greet(user: User): string {
+  return `Hola, ${user.name}`;
+}
+```
+
+```bash
+# Bloque de código Bash
+npm install rehype-pretty-code shiki
+npm run dev
+```

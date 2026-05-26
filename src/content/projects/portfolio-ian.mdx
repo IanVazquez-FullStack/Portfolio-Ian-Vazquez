@@ -1,0 +1,68 @@
+---
+title: "portfolio-ian"
+slug: "portfolio-ian"
+summary: "Portfolio web de desarrollador full stack con Next.js 14, TypeScript y Framer Motion"
+publishedAt: "2026-05-25"
+featured: true
+stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Resend", "MDX", "Vercel"]
+repoUrl: "https://github.com/ianv/portfolio-ian"
+coverImage: "/projects/portfolio-ian/cover.webp"
+---
+
+# Portfolio Ian
+
+Portfolio personal construido con Next.js, TypeScript, Tailwind CSS y MDX para presentar proyectos técnicos, artículos y formas de contacto profesional de manera rápida, accesible y elegante.
+
+## Contexto
+
+Como desarrollador full stack, siempre he valorado tener un espacio digital propio que funcione como un reflejo de mi filosofía de ingeniería: simplicidad, velocidad, atención al detalle y control total del contenido. En lugar de depender de plataformas de terceros de código cerrado o plantillas preconstruidas sin alma, decidí diseñar y construir este portfolio desde cero.
+
+El objetivo principal era crear un sistema extremadamente optimizado basado en archivos locales (MDX) para la gestión de proyectos y blog posts, evitando bases de datos pesadas y reduciendo la latencia de carga a niveles mínimos, mientras ofrezco una interfaz de usuario pulida y con un sistema de temas robusto (Dark/Light).
+
+---
+
+## El Problema y la Decisión Técnica Difícil
+
+Uno de los mayores desafíos técnicos en la creación de portfolios modernos basados en Next.js App Router y Tailwind CSS es la implementación de un sistema de temas (Dark/Light mode) que sea consistente, de alto rendimiento y libre del molesto **"theme flash"** (un parpadeo blanco/oscuro en la hidratación inicial del lado del cliente).
+
+En lugar de arrastrar librerías de terceros complejas como `next-themes`, decidí implementar una solución robusta y ligera nativa del ecosistema utilizando un script inline inyectado en el `HTML` del documento antes de la hidratación de React, combinando variables CSS dinámicas de Tailwind.
+
+Aquí está el bloque de código clave que implementé para gestionar la sincronización de estados y evitar parpadeos:
+
+```ts
+// src/lib/theme.ts
+export type Theme = 'light' | 'dark';
+
+export function getSystemTheme(): Theme {
+  if (typeof window === 'undefined') return 'dark';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  if (theme === 'dark') {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
+  localStorage.setItem('theme', theme);
+}
+```
+
+Al inyectar esta lógica en el nivel más alto del `layout.tsx` de Next.js, logramos asegurar que la clase `.dark` se aplique al tag `<html>` de manera sincrónica inmediatamente antes de que el navegador pinte el primer píxel.
+
+---
+
+## Capturas de Pantalla
+
+A continuación se muestra el diseño visual limpio y responsivo desarrollado para el portfolio:
+
+![Screenshot del Portfolio](/projects/portfolio-ian/screenshot-01.webp)
+
+---
+
+## Lecciones Aprendidas
+
+1. **Evitar dependencias innecesarias:** Crear el sistema de temas y el parser de MDX de manera nativa utilizando las primitivas de Next.js (`@next/mdx`) redujo drásticamente el tamaño final del bundle de JavaScript, además de darnos un control absoluto sobre el flujo de carga.
+2. **WebP por defecto:** El uso estricto del formato WebP para todas las imágenes y capturas optimizadas no solo mejora la velocidad de respuesta, sino que garantiza puntuaciones sobresalientes en Core Web Vitals (cercanas al 100% de performance).
+3. **El valor del tipado estricto:** Integrar esquemas de validación estricta con Zod tanto para el frontmatter de MDX como para los payloads del formulario de contacto nos permitió atrapar errores estructurales durante la compilación, en vez de descubrirlos en producción.

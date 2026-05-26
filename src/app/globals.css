@@ -132,4 +132,16 @@ body {
   html {
     @apply font-sans;
   }
+
+  code[data-theme*=" "] span,
+  code[data-theme*=" "] {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  .dark code[data-theme*=" "] span,
+  .dark code[data-theme*=" "] {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
 }

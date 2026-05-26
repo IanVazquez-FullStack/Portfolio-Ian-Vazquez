@@ -1,6 +1,6 @@
 # Story 3.1: Definir schema Zod compartido y helpers ApiResponse
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -18,24 +18,24 @@ so that el formulario y el endpoint compartan validación y formato de respuesta
 
 ## Tasks / Subtasks
 
-- [ ] Instalar Zod si no está presente: `npm install zod` (AC: #1)
-- [ ] Crear `src/lib/validation/contactSchema.ts` (AC: #1, #2)
-  - [ ] `name`: `z.string().min(2).max(100)`
-  - [ ] `email`: `z.string().email()`
-  - [ ] `subject`: `z.string().min(3).max(200)`
-  - [ ] `message`: `z.string().min(10).max(5000)`
-  - [ ] `company`: `z.string().optional()` (honeypot — no validar contenido)
-  - [ ] Exportar `ContactInput = z.infer<typeof contactSchema>`
-- [ ] Crear `src/lib/api/responses.ts` (AC: #3, #4)
-  - [ ] Tipo `ApiResponse<T>`: `{ ok: true; data?: T; message?: string } | { ok: false; error: string; fieldErrors?: Record<string, string[]> }`
-  - [ ] Helper `ok<T>(data?, message?)`: retorna `Response.json({ ok: true, data, message }, { status: 200 })`
-  - [ ] Helper `fail(error, fieldErrors?, status = 400)`: retorna `Response.json({ ok: false, error, fieldErrors }, { status })`
-  - [ ] Mensajes de error al cliente siempre genéricos (nunca stack traces ni mensajes de Resend)
-- [ ] Crear tests en `src/lib/validation/contactSchema.test.ts` (AC: #5)
-  - [ ] Test: input válido pasa
-  - [ ] Test: email malformado falla
-  - [ ] Test: message < 10 chars falla
-  - [ ] Test: honeypot `company` con contenido — schema lo permite (descarte es en el handler)
+- [x] Instalar Zod si no está presente: `npm install zod` (AC: #1)
+- [x] Crear `src/lib/validation/contactSchema.ts` (AC: #1, #2)
+  - [x] `name`: `z.string().min(2).max(100)`
+  - [x] `email`: `z.string().email()`
+  - [x] `subject`: `z.string().min(3).max(200)`
+  - [x] `message`: `z.string().min(10).max(5000)`
+  - [x] `company`: `z.string().optional()` (honeypot — no validar contenido)
+  - [x] Exportar `ContactInput = z.infer<typeof contactSchema>`
+- [x] Crear `src/lib/api/responses.ts` (AC: #3, #4)
+  - [x] Tipo `ApiResponse<T>`: `{ ok: true; data?: T; message?: string } | { ok: false; error: string; fieldErrors?: Record<string, string[]> }`
+  - [x] Helper `ok<T>(data?, message?)`: retorna `Response.json({ ok: true, data, message }, { status: 200 })`
+  - [x] Helper `fail(error, fieldErrors?, status = 400)`: retorna `Response.json({ ok: false, error, fieldErrors }, { status })`
+  - [x] Mensajes de error al cliente siempre genéricos (nunca stack traces ni mensajes de Resend)
+- [x] Crear tests en `src/lib/validation/contactSchema.test.ts` (AC: #5)
+  - [x] Test: input válido pasa
+  - [x] Test: email malformado falla
+  - [x] Test: message < 10 chars falla
+  - [x] Test: honeypot `company` con contenido — schema lo permite (descarte es en el handler)
 
 ## Dev Notes
 
@@ -73,10 +73,24 @@ src/lib/api/
 
 ### Agent Model Used
 
-_pending_
+Cascade (Claude)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Instalado vitest como framework de unit testing (primera historia que lo requería).
+- Creado `contactSchema` Zod con validaciones name (2-100), email, subject (3-200), message (10-5000), company opcional.
+- Exportado tipo `ContactInput`.
+- Creado `ApiResponse<T>` y helpers `ok()` / `fail()` con shape AR-03.
+- Tests: 9 para contactSchema + 7 para responses = 16 tests pasando.
+- Lint y build sin errores.
+
 ### File List
+
+- `src/lib/validation/contactSchema.ts`
+- `src/lib/validation/contactSchema.test.ts`
+- `src/lib/api/responses.ts`
+- `src/lib/api/responses.test.ts`
+- `package.json` (script `test` agregado)
+- `_bmad-output/implementation-artifacts/sprint-status.yaml` (status actualizado)

@@ -63,14 +63,41 @@ public/og/
 - [Source: _bmad-output/planning-artifacts/epics.md#FR-21, FR-22]
 - [Source: _bmad-output/project-context.md#SEO y Metadata]
 
+### Review Findings
+
+- [ ] [Review][Patch] `NEXT_PUBLIC_SITE_URL=""` causa crash en build — `src/lib/seo/site.ts:3`
+  Si la variable de entorno está definida como string vacío, `"" ?? fallback` devuelve `""` (falsy pero no nullish). Luego `new URL("")` en `metadataBase` lanza `TypeError: Invalid URL` durante el build. Fix: usar `||` en vez de `??`, o agregar `.trim()` y chequeo de string vacía.
+
+- [ ] [Review][Patch] `title=""` deja OG/Twitter title vacío — `src/lib/seo/metadata.ts:22`
+  Si se pasa `title=""`, `resolvedTitle` es `""` y los campos `openGraph.title` / `twitter.title` quedan vacíos, aunque `title.default` sigue siendo `SITE_NAME`. Esto es inconsistente. Fix: usar `title || SITE_NAME` para el fallback.
+
+- [ ] [Review][Patch] `description=""` deja OG/Twitter description vacía — `src/lib/seo/metadata.ts:23`
+  Similar al title — OG/Twitter description queda vacía. Fix: usar `description || DEFAULT_DESCRIPTION`.
+
+- [ ] [Review][Patch] Faltan tests unitarios para `buildMetadata()` y constantes SEO — `src/lib/seo/`
+  El project-context.md exige tests unitarios co-localizados como `*.test.ts`. No existen tests para validar el output de `buildMetadata()` ni las constantes de `site.ts`.
+
 ## Dev Agent Record
 
 ### Agent Model Used
 
-_pending_
+claude-sonnet-4-20250514
 
 ### Debug Log References
 
+- Build inicial mostró advertencia `metadataBase property in not set`; se agregó `metadataBase: new URL(SITE_URL)` en `buildMetadata()` para resolver URLs de OG/Twitter correctamente y eliminar la advertencia.
+
 ### Completion Notes List
 
+- Se implementó `metadataBase` adicional al AC para cumplir con el requerimiento de Next.js 16 de definir base para resolución de imágenes OG/Twitter.
+- Las páginas `/about` y `/contact` usan `buildMetadata()` con títulos y descripciones en español coherentes.
+- El build de Next.js pasa sin errores de TypeScript ni de compilación.
+
 ### File List
+
+- `src/lib/seo/site.ts` — constantes del sitio
+- `src/lib/seo/metadata.ts` — helper `buildMetadata()`
+- `src/app/layout.tsx` — metadata por defecto vía `buildMetadata()`
+- `src/app/about/page.tsx` — metadata propia con helper
+- `src/app/contact/page.tsx` — metadata propia con helper
+- `public/og/default-og.webp` — imagen OG fallback 1200x630
