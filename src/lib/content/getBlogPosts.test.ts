@@ -51,9 +51,26 @@ describe("blog post loaders", () => {
     const posts = getBlogPosts();
 
     expect(posts.length).toBeGreaterThanOrEqual(1);
-    expect(posts[0]?.slug).toBe("hola-mundo");
-    expect(typeof posts[0]?.content).toBe("string");
+
+    const publishedDates = posts.map((post) => Date.parse(post.publishedAt));
+    expect(publishedDates).toEqual([
+      ...publishedDates,
+    ].sort((first, second) => second - first));
+
+    expect(posts.every((post) => typeof post.content === "string")).toBe(true);
     expect(posts[0]?.readingTime).toBeGreaterThanOrEqual(1);
+  });
+
+  it("excludes draft posts in production mode", () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+
+    try {
+      const posts = getBlogPosts();
+      expect(posts.some((post) => post.draft)).toBe(false);
+    } finally {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
   });
 
   it("loads one blog post by slug with renderable MDX content", () => {

@@ -58,10 +58,16 @@ export function getBlogPosts(): BlogPostWithContent[] {
       if (!isProduction) return true;
       return !post.draft;
     })
-    .sort(
-      (firstPost, secondPost) =>
-        Date.parse(secondPost.publishedAt) - Date.parse(firstPost.publishedAt),
-    );
+    .sort((firstPost, secondPost) => {
+      const firstDate = Date.parse(firstPost.publishedAt);
+      const secondDate = Date.parse(secondPost.publishedAt);
+
+      if (firstDate !== secondDate) {
+        return secondDate - firstDate;
+      }
+
+      return secondPost.slug.localeCompare(firstPost.slug);
+    });
 }
 
 export function getBlogPostBySlug(slug: string): BlogPostWithContent | null {

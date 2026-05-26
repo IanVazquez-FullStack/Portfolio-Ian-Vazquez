@@ -118,6 +118,7 @@ function CustomImage({
       alt={alt || ""}
       width={w}
       height={h}
+      sizes="(max-width: 768px) 100vw, 800px"
       className="my-6 rounded-lg"
       {...props}
     />
@@ -142,10 +143,12 @@ function InlineCode(props: React.ComponentPropsWithoutRef<"code">) {
   );
 }
 
-function Pre(
-  props: HTMLAttributes<HTMLPreElement>,
-) {
-  return <CodeBlock {...props} />;
+function Pre(props: HTMLAttributes<HTMLPreElement>) {
+  const className = String(props.className ?? "");
+  const languageMatch = className.match(/language-([^-\s]+)/);
+  const language = languageMatch?.[1];
+
+  return <CodeBlock language={language} {...props} />;
 }
 
 export const MDXComponents = {

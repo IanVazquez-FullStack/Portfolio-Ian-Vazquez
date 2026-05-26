@@ -1,6 +1,6 @@
 # Story 4.5: Agregar posts seed y links contextuales a proyectos
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -17,14 +17,14 @@ so that pueda evaluar la profundidad técnica desde el primer deploy.
 
 ## Tasks / Subtasks
 
-- [ ] Crear `src/content/blog/endpoint-contacto-seguro.mdx` (AC: #1, #2, #3)
-  - [ ] Frontmatter válido: `title`, `slug: "endpoint-contacto-seguro"`, `summary`, `publishedAt: "2026-05-25"`, `tags: ["Next.js", "API", "Seguridad", "TypeScript"]`, `draft: false`
-  - [ ] Contenido ≥ 800 palabras sobre el endpoint `POST /api/contact`
-  - [ ] ≥ 2 bloques de código TypeScript (ej. schema Zod + Route Handler)
-  - [ ] Link interno: `[portfolio-ian](/projects/portfolio-ian)`
-  - [ ] Link externo: ej. a docs de Resend o Zod
-- [ ] Verificar que renderiza en `/blog/endpoint-contacto-seguro` sin errores (AC: #3)
-- [ ] Crear `docs/blog-project-linking.md` con patrón documentado (AC: #4)
+- [x] Crear `src/content/blog/endpoint-contacto-seguro.mdx` (AC: #1, #2, #3)
+  - [x] Frontmatter válido: `title`, `slug: "endpoint-contacto-seguro"`, `summary`, `publishedAt: "2026-05-25"`, `tags: ["Next.js", "API", "Seguridad", "TypeScript"]`, `draft: false`
+  - [x] Contenido ≥ 800 palabras sobre el endpoint `POST /api/contact`
+  - [x] ≥ 2 bloques de código TypeScript (ej. schema Zod + Route Handler)
+  - [x] Link interno: `[portfolio-ian](/projects/portfolio-ian)`
+  - [x] Link externo: ej. a docs de Resend o Zod
+- [x] Verificar que renderiza en `/blog/endpoint-contacto-seguro` sin errores (AC: #3)
+- [x] Crear `docs/blog-project-linking.md` con patrón documentado (AC: #4)
 
 ## Dev Notes
 
@@ -59,10 +59,26 @@ docs/
 
 ### Agent Model Used
 
-_pending_
+Cascade (Claude)
 
 ### Debug Log References
 
+- `npm run build`: exitoso, `/blog/endpoint-contacto-seguro` pre-renderizado estáticamente
+- `tsc --noEmit`: pasó sin errores
+
 ### Completion Notes List
 
+- Creado `src/content/blog/endpoint-contacto-seguro.mdx` con frontmatter válido y contenido técnico real de 1033 palabras (≥ 800 requeridas)
+- Incluye 2 bloques de código TypeScript (schema Zod + Route Handler)
+- Incluye link interno a `/projects/portfolio-ian` y link externo a docs de Resend
+- `npm run build` genera `/blog/endpoint-contacto-seguro` como ruta estática sin errores ni warnings
+- Creado `docs/blog-project-linking.md` documentando el patrón de enlaces blog↔proyectos
+
 ### File List
+
+- `src/content/blog/endpoint-contacto-seguro.mdx`
+- `docs/blog-project-linking.md`
+
+### Change Log
+
+- 2026-05-26: Implementada historia 4.5 completa — post seed real + patrón de links documentado

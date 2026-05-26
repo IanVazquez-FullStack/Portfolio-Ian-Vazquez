@@ -17,7 +17,7 @@ export function Card({ children, className, ...props }: CardProps) {
     <div
       {...props}
       className={joinClasses(
-        "rounded-3xl border border-border bg-background p-6 shadow-sm transition-colors hover:border-border-hover md:p-8",
+        "rounded-3xl border border-border bg-background p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-border-hover hover:shadow-lg active:scale-[0.99] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none motion-reduce:transition-colors md:p-8",
         className,
       )}
     >

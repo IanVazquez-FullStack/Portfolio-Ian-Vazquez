@@ -1,6 +1,6 @@
 # Story 4.4: Implementar página individual /blog/[slug] con navegación prev/next
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -18,19 +18,19 @@ so that pueda profundizar y descubrir más.
 
 ## Tasks / Subtasks
 
-- [ ] Crear `src/app/blog/[slug]/page.tsx` (AC: #1, #4, #5)
-  - [ ] `export async function generateStaticParams()`: retorna slugs de `getBlogPosts()`
-  - [ ] Llamar `getBlogPostBySlug(slug)`, `notFound()` si null
-  - [ ] Metadata básica (refinada en Epic 6)
-- [ ] Implementar layout del artículo (AC: #2)
-  - [ ] `<h1>{post.title}</h1>` único
-  - [ ] Metadata bar: fecha formateada (`formatDate`), tiempo de lectura, tags como `Badge`
-  - [ ] Renderizar contenido MDX con `MDXComponents`
-- [ ] Implementar navegación prev/next (AC: #2)
-  - [ ] Obtener todos los posts ordenados: `getBlogPosts()`
-  - [ ] Encontrar índice del post actual, extraer prev/next
-  - [ ] Renderizar links "← {prev.title}" y "{next.title} →" al final del artículo
-- [ ] Agregar link "← Volver al blog" en el header de la página (AC: #3)
+- [x] Crear `src/app/blog/[slug]/page.tsx` (AC: #1, #4, #5)
+  - [x] `export async function generateStaticParams()`: retorna slugs de `getBlogPosts()`
+  - [x] Llamar `getBlogPostBySlug(slug)`, `notFound()` si null
+  - [x] Metadata básica (refinada en Epic 6)
+- [x] Implementar layout del artículo (AC: #2)
+  - [x] `<h1>{post.title}</h1>` único
+  - [x] Metadata bar: fecha formateada (`formatDate`), tiempo de lectura, tags como `Badge`
+  - [x] Renderizar contenido MDX con `MDXComponents`
+- [x] Implementar navegación prev/next (AC: #2)
+  - [x] Obtener todos los posts ordenados: `getBlogPosts()`
+  - [x] Encontrar índice del post actual, extraer prev/next
+  - [x] Renderizar links "← {prev.title}" y "{next.title} →" al final del artículo
+- [x] Agregar link "← Volver al blog" en el header de la página (AC: #3)
 
 ## Dev Notes
 
@@ -65,10 +65,25 @@ src/app/blog/[slug]/
 
 ### Agent Model Used
 
-_pending_
+Cascade (Claude Sonnet 4.5)
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- ✅ Implementada página `/blog/[slug]/page.tsx` como Server Component con `generateStaticParams()`
+- ✅ Metadata dinámica por post (`title`, `description`) vía `generateMetadata()`
+- ✅ `notFound()` para slugs inexistentes
+- ✅ Layout de artículo con `<h1>` único, metadata bar (fecha formateada, tiempo de lectura, tags como Badge)
+- ✅ Contenido MDX renderizado con `MDXComponents` vía `compileMdx()`
+- ✅ Navegación prev/next al final del artículo en orden cronológico
+- ✅ Link "← Volver al blog" en header (UX-DR14)
+- ✅ Helper puro `getAdjacentPosts()` extraído a `src/lib/content/` con tests unitarios (6 tests)
+- ✅ Build exitoso — `/blog/hola-mundo` pre-renderizado estáticamente
+- ✅ 85 tests unitarios pasan; no se introdujeron regresiones
+
 ### File List
+
+- `src/app/blog/[slug]/page.tsx` (new)
+- `src/lib/content/getAdjacentPosts.ts` (new)
+- `src/lib/content/getAdjacentPosts.test.ts` (new)

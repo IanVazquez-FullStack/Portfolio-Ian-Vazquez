@@ -6,16 +6,17 @@ import type { Project } from "@/lib/content/schemas";
 type ProjectCardProps = {
   project: Project;
   headingLevel?: "h2" | "h3";
+  priority?: boolean;
 };
 
-export function ProjectCard({ project, headingLevel = "h3" }: ProjectCardProps) {
+export function ProjectCard({ project, headingLevel = "h3", priority = false }: ProjectCardProps) {
   const Heading = headingLevel;
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-border-hover">
+    <article className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 ease-out hover:-translate-y-1 hover:border-border-hover hover:shadow-lg active:scale-[0.99] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none motion-reduce:transition-colors">
       <Link
         href={`/projects/${project.slug}`}
-        className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label={`Ver proyecto: ${project.title}`}
       >
         {/* Cover Image */}
@@ -25,10 +26,10 @@ export function ProjectCard({ project, headingLevel = "h3" }: ProjectCardProps) 
             alt={`Captura del proyecto ${project.title}`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-300 group-hover:scale-105 motion-reduce:transform-none"
             placeholder="blur"
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlNWU1ZTUiLz48L3N2Zz4="
-            priority={false}
+            priority={priority}
           />
         </div>
 
@@ -51,7 +52,7 @@ export function ProjectCard({ project, headingLevel = "h3" }: ProjectCardProps) 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Ver demo de ${project.title}`}
-                className="text-caption text-accent hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="text-caption text-accent hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-150"
               >
                 Demo
               </a>
@@ -62,7 +63,7 @@ export function ProjectCard({ project, headingLevel = "h3" }: ProjectCardProps) 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Ver repositorio de ${project.title}`}
-                className="text-caption text-accent hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="text-caption text-accent hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-colors duration-150"
               >
                 Repositorio
               </a>

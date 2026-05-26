@@ -1,0 +1,154 @@
+---
+title: "Construyendo un Endpoint de Contacto Seguro con Next.js 14"
+slug: "endpoint-contacto-seguro"
+summary: "Un recorrido técnico por el diseño del endpoint POST /api/contact: validación con Zod, honeypot anti-spam, integración con Resend y lecciones aprendidas del camino."
+publishedAt: "2026-05-25"
+tags: ["Next.js", "API", "Seguridad", "TypeScript"]
+draft: false
+---
+
+# Construyendo un Endpoint de Contacto Seguro con Next.js 14
+
+Cada portfolio necesita una forma de que los visitantes puedan contactar al desarrollador. Lo obvio sería dejar un mail o un link a LinkedIn, pero eso carece de profesionalismo y no permite medir el interés real. La alternativa es un formulario de contacto propio, lo cual abre una puerta a todo tipo de abusos si no se construye con cuidado.
+
+En este artículo recorro paso a paso cómo diseñé el endpoint `POST /api/contact` de este portfolio, priorizando seguridad, claridad en la validación y una experiencia de usuario que no penaliza al visitante legítimo.
+
+## El problema con los formularios de contacto sin protección
+
+Los formularios públicos son un blanco fácil para bots y spammers. Sin medidas de protección, en pocas semanas tu bandeja de entrada se convierte en un mar de ofertas de SEO dudoso, criptomonedas y phishing. Las soluciones más comunes incluyen:
+
+- **reCAPTCHA**: efectiva pero introduce dependencia de Google y fricción para el usuario.
+- **Rate limiting**: necesario pero no filtra bots sofisticados que distribuyen ataques.
+- **Honeypot**: campo oculto que los bots llenan y los humanos ignoran. Ligero, sin dependencias externas y accesible.
+
+Opté por una combinación de validación estricta en servidor + honeypot + rate limiting básico, manteniendo el formulario completamente libre de widgets de terceros.
+
+## Diseño del schema Zod compartido
+
+La primera decisión arquitectónica fue usar un único schema Zod tanto en cliente como en servidor. Esto garantiza que cualquier cambio en los requisitos del formulario se propague de manera consistente sin que la validación cliente y servidor se desincronicen.
+
+El schema define los campos `name`, `email`, `message` y el campo oculto `company` que funciona como honeypot:
+
+```typescript
+import { z } from "zod";
+
+export const contactSchema = z.object({
+  name: z.string().min(1, "El nombre es obligatorio").max(100),
+  email: z.string().email("El email no es válido"),
+  message: z
+    .string()
+    .min(10, "El mensaje debe tener al menos 10 caracteres")
+    .max(2000, "El mensaje es demasiado largo"),
+  company: z.string().max(100).optional(),
+});
+
+export type ContactFormData = z.infer<typeof contactSchema>;
+```
+
+Notar que `company` es opcional y no tiene restricciones severas. Es un campo oculto en la interfaz, por lo que un visitante humano nunca lo completará. Si llega con contenido, asumimos que se trata de un bot.
+
+## El Route Handler: validación + honeypot
+
+En Next.js 14 con App Router, los Route Handlers viven en `src/app/api/contact/route.ts`. El flujo del handler es deliberadamente simple: parsear el body, validar con Zod, detectar honeypot, enviar mail, responder con un formato consistente.
+
+```typescript
+import { NextResponse } from "next/server";
+import { contactSchema } from "@/lib/schemas/contactSchema";
+import { sendContactEmail } from "@/lib/email/sendContactEmail";
+import { type ApiResponse } from "@/lib/api/types";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const result = contactSchema.safeParse(body);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      const response: ApiResponse = {
+        ok: false,
+        error: "Datos de contacto inválidos",
+        fieldErrors,
+      };
+      return NextResponse.json(response, { status: 400 });
+    }
+
+    const { name, email, message, company } = result.data;
+
+    if (company && company.length > 0) {
+      return NextResponse.json(
+        { ok: true, message: "Mensaje recibido" },
+        { status: 200 }
+      );
+    }
+
+    await sendContactEmail({ name, email, message });
+
+    const response: ApiResponse = {
+      ok: true,
+      message: "Mensaje enviado con éxito",
+    };
+    return NextResponse.json(response, { status: 200 });
+  } catch {
+    const response: ApiResponse = {
+      ok: false,
+      error: "Error inesperado al procesar el mensaje",
+    };
+    return NextResponse.json(response, { status: 500 });
+  }
+}
+```
+
+Algunos detalles importantes del handler:
+
+- **Honeypot responde 200**: si detectamos que `company` tiene contenido, devolvemos 200 con un mensaje genérico. Esto evita que el bot detecte que fue bloqueado y adapte su comportamiento.
+- **Errores de validación expuestos**: los errores por campo (`fieldErrors`) permiten al formulario cliente mostrar mensajes específicos junto a cada input sin lógica adicional.
+- **Catch genérico**: el bloque `catch` no expone el error interno al cliente. En producción, el stack trace queda en logs del servidor.
+- **Formato de respuesta unificado**: siempre se usa `ApiResponse`, evitando mezclar `{ success: false }` con `{ ok: false }` en distintos endpoints.
+
+## Integración con Resend
+
+Para el envío de emails elegí [Resend](https://resend.com), un servicio moderno diseñado específicamente para developers. La integración se reduce a una función helper que recibe los datos validados y genera el payload del email:
+
+```typescript
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function sendContactEmail({
+  name,
+  email,
+  message,
+}: {
+  name: string;
+  email: string;
+  message: string;
+}) {
+  return resend.emails.send({
+    from: process.env.CONTACT_FROM_EMAIL!,
+    to: process.env.CONTACT_TO_EMAIL!,
+    subject: `Nuevo mensaje de ${name}`,
+    replyTo: email,
+    text: message,
+  });
+}
+```
+
+Resend maneja la infraestructura de entrega, reputación de dominio y tracking de bounces, lo que me permite enfocarme en el producto sin preocuparme por la configuración de servidores SMTP.
+
+## Lecciones aprendidas
+
+**Validar en servidor es no negociable.** No importa cuán robusta sea la validación cliente, el servidor debe ser la fuente de verdad. Un atacante puede saltearse el frontend enviando requests directamente a `/api/contact`.
+
+**El honeypot es suficiente para el 90% de los bots.** No es infalible contra ataques dirigidos, pero filtra ruido automático sin costo de usuario. Para un portfolio personal, es la relación costo-beneficio correcta.
+
+**Formato de respuesta estandarizado.** Definir `ApiResponse` desde el primer endpoint ahorra tiempo cuando aparecen requerimientos nuevos. Todo el frontend puede asumir que la respuesta tiene forma `{ ok, data?, error?, fieldErrors? }` sin excepciones.
+
+**Variables de entorno documentadas.** Las claves de API y direcciones de email deben estar en `.env.example` desde el día cero. Esto permite que cualquier colaborador levante el proyecto sin adivinar qué variables necesita.
+
+## El proyecto completo
+
+Este endpoint forma parte del portfolio que estás visitando ahora mismo. Si querés ver cómo se integra con el formulario de contacto en el frontend y el resto de la arquitectura, podés explorar el proyecto completo en la [página de portfolio-ian](/projects/portfolio-ian).
+
+---
+
+¿Te interesa la validación con Zod? La documentación oficial cubre desde schemas simples hasta transformaciones complejas con refine y superRefine.

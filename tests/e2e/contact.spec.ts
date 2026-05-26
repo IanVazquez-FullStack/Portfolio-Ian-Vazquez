@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 const validFormData = {
-  name: "Ian Vázquez",
+  name: "Ian Vazquez",
   email: "ian@example.com",
   subject: "Consulta",
   message: "Mensaje de prueba con suficientes caracteres.",

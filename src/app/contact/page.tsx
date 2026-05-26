@@ -7,7 +7,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 export const metadata = buildMetadata({
   title: "Contacto",
   description:
-    "Ponte en contacto con Ian Vázquez. Envía un mensaje o consulta para colaborar en tu próximo proyecto.",
+    "Ponte en contacto con Ian Vazquez. Envía un mensaje o consulta para colaborar en tu próximo proyecto.",
 });
 
 type ContactPageProps = {

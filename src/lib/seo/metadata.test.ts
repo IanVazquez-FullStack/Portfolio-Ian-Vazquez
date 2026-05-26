@@ -10,10 +10,10 @@ import {
 
 describe("site.ts constants", () => {
   it("exports expected constants", () => {
-    expect(SITE_NAME).toBe("Ian Vázquez");
+    expect(SITE_NAME).toBe("Ian Vazquez");
     expect(SITE_URL).toBeTruthy();
     expect(DEFAULT_DESCRIPTION).toContain("Full Stack");
-    expect(AUTHOR).toBe("Ian Vázquez");
+    expect(AUTHOR).toBe("Ian Vazquez");
     expect(DEFAULT_OG_IMAGE).toBe("/og/default-og.webp");
   });
 });

@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/re
 import { ContactForm } from "./ContactForm";
 
 function fillForm() {
-  fireEvent.change(screen.getByLabelText(/nombre/i), { target: { value: "Ian Vázquez" } });
+  fireEvent.change(screen.getByLabelText(/nombre/i), { target: { value: "Ian Vazquez" } });
   fireEvent.change(screen.getByLabelText(/correo electrónico/i), { target: { value: "ian@example.com" } });
   fireEvent.change(screen.getByLabelText(/asunto/i), { target: { value: "Consulta" } });
   fireEvent.change(screen.getByLabelText(/mensaje/i), { target: { value: "Mensaje de prueba con suficientes caracteres." } });
@@ -142,7 +142,7 @@ describe("ContactForm", () => {
       expect(screen.getByRole("alert")).toBeDefined();
     });
 
-    expect((screen.getByLabelText(/nombre/i) as HTMLInputElement).value).toBe("Ian Vázquez");
+    expect((screen.getByLabelText(/nombre/i) as HTMLInputElement).value).toBe("Ian Vazquez");
     expect((screen.getByLabelText(/correo electrónico/i) as HTMLInputElement).value).toBe("ian@example.com");
     expect((screen.getByLabelText(/asunto/i) as HTMLInputElement).value).toBe("Consulta");
     expect((screen.getByLabelText(/mensaje/i) as HTMLTextAreaElement).value).toBe("Mensaje de prueba con suficientes caracteres.");
@@ -169,7 +169,7 @@ describe("ContactForm", () => {
     });
 
     // Otros campos preservan sus valores
-    expect((screen.getByLabelText(/nombre/i) as HTMLInputElement).value).toBe("Ian Vázquez");
+    expect((screen.getByLabelText(/nombre/i) as HTMLInputElement).value).toBe("Ian Vazquez");
     expect((screen.getByLabelText(/asunto/i) as HTMLInputElement).value).toBe("Consulta");
   });
 
@@ -233,7 +233,7 @@ describe("ContactForm", () => {
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          name: "Ian Vázquez",
+          name: "Ian Vazquez",
           email: "ian@example.com",
           subject: "Consulta",
           message: "Mensaje de prueba con suficientes caracteres.",

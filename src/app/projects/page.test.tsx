@@ -68,6 +68,6 @@ describe("ProjectsPage", () => {
 
   it("exporta metadata estática correcta", () => {
     expect(metadata.title).toBe("Proyectos");
-    expect(metadata.description).toContain("Ian Vázquez");
+    expect(metadata.description).toContain("Ian Vazquez");
   });
 });

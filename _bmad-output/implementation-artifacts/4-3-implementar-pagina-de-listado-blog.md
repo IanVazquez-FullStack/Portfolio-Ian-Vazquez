@@ -1,6 +1,6 @@
 # Story 4.3: Implementar página de listado /blog
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -18,17 +18,17 @@ so that pueda elegir qué leer según tiempo e interés.
 
 ## Tasks / Subtasks
 
-- [ ] Crear `src/components/content/BlogPostCard.tsx` (AC: #2, #3)
-  - [ ] Props: `post: BlogPost`
-  - [ ] Mostrar: título, summary, `formatDate(publishedAt)`, `readingTime` min, tags como `Badge` pequeños
-  - [ ] Link accesible a `/blog/${post.slug}`
-  - [ ] Server Component (no requiere estado)
-- [ ] Crear `src/app/blog/page.tsx` como Server Component (AC: #1, #4, #5)
-  - [ ] Llamar `getBlogPosts()` directamente
-  - [ ] Grid/list responsive: `grid-cols-1 md:grid-cols-2 gap-6`
-  - [ ] `<h1>Blog</h1>` como heading único
-  - [ ] Empty state si `posts.length === 0`
-  - [ ] Metadata estática: `export const metadata = { title: 'Blog', description: '...' }`
+- [x] Crear `src/components/content/BlogPostCard.tsx` (AC: #2, #3)
+  - [x] Props: `post: BlogPost`
+  - [x] Mostrar: título, summary, `formatDate(publishedAt)`, `readingTime` min, tags como `Badge` pequeños
+  - [x] Link accesible a `/blog/${post.slug}`
+  - [x] Server Component (no requiere estado)
+- [x] Crear `src/app/blog/page.tsx` como Server Component (AC: #1, #4, #5)
+  - [x] Llamar `getBlogPosts()` directamente
+  - [x] Grid/list responsive: `grid-cols-1 md:grid-cols-2 gap-6`
+  - [x] `<h1>Blog</h1>` como heading único
+  - [x] Empty state si `posts.length === 0`
+  - [x] Metadata estática: `export const metadata = { title: 'Blog', description: '...' }`
 
 ## Dev Notes
 
@@ -59,10 +59,21 @@ src/components/content/
 
 ### Agent Model Used
 
-_pending_
+Cascade
 
 ### Debug Log References
 
 ### Completion Notes List
 
+- Creado `src/components/content/BlogPostCard.tsx` como Server Component.
+- Actualizado `src/app/blog/page.tsx` para listar posts vía `getBlogPosts()`.
+- Grid responsive `grid-cols-1 md:grid-cols-2 gap-6` con cards estilizadas consistentes con `ProjectCard`.
+- Empty state implementado con mensaje "Próximamente artículos técnicos sobre el desarrollo de este portfolio y más." (UX-DR12).
+- Cada card muestra fecha formateada con `formatDate`, tiempo de lectura, título, excerpt y hasta 4 tags como `Badge` pequeños.
+- Navegación a `/blog/[slug]` mediante `next/link` accesible (`aria-label`).
+- `tsc --noEmit` pasa sin errores.
+
 ### File List
+
+- `src/app/blog/page.tsx`
+- `src/components/content/BlogPostCard.tsx`

@@ -20,7 +20,7 @@ export function CVDownloadButton({
       as="a"
       href="/cv/ian-vazquez-cv.pdf"
       download
-      aria-label="Descargar CV de Ian Vázquez (PDF)"
+      aria-label="Descargar CV de Ian Vazquez (PDF)"
       variant={variant}
       className={className}
     >

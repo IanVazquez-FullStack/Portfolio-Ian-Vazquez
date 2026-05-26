@@ -25,15 +25,15 @@ type AnchorButtonProps = BaseButtonProps &
 export type ButtonProps = NativeButtonProps | AnchorButtonProps;
 
 const baseClasses =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-body font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-body font-semibold transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 motion-reduce:transition-colors motion-reduce:duration-0";
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-accent text-slate-950 hover:bg-accent-hover active:bg-accent focus-visible:ring-accent",
+    "bg-accent text-slate-950 hover:bg-accent-hover hover:scale-[1.02] active:scale-[0.98] active:bg-accent focus-visible:ring-accent motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
   secondary:
-    "border border-border bg-muted text-foreground hover:border-border-hover hover:bg-background active:bg-muted",
+    "border border-border bg-muted text-foreground hover:border-border-hover hover:bg-background hover:scale-[1.02] active:scale-[0.98] active:bg-muted motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
   ghost:
-    "bg-transparent text-foreground hover:bg-muted active:bg-background",
+    "bg-transparent text-foreground hover:bg-muted hover:scale-[1.02] active:scale-[0.98] active:bg-background motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
   link: "min-h-0 rounded-none px-0 py-0 text-accent underline-offset-4 hover:text-accent-hover hover:underline active:text-accent",
 };
 

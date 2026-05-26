@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo/metadata";
 import { Container } from "@/components/ui/Container";
 import { ProjectCard } from "@/components/content/ProjectCard";
+import { StaggeredGrid, StaggeredItem } from "@/components/motion/StaggeredGrid";
 import { getProjects } from "@/lib/content/getProjects";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Proyectos",
-  description: "Todos los proyectos de Ian Vázquez — desarrollo web, aplicaciones y experimentos técnicos.",
-};
+  description:
+    "Todos los proyectos de Ian Vazquez — desarrollo web, aplicaciones y experimentos técnicos.",
+});
 
 export default function ProjectsPage() {
   let projects: ReturnType<typeof getProjects> = [];
@@ -34,15 +37,17 @@ export default function ProjectsPage() {
             </p>
           </div>
         ) : (
-          <div
+          <StaggeredGrid
             className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
             role="list"
             aria-label="Listado de proyectos"
           >
             {projects.map((project) => (
-              <ProjectCard key={project.slug} project={project} headingLevel="h2" />
+              <StaggeredItem key={project.slug}>
+                <ProjectCard project={project} headingLevel="h2" />
+              </StaggeredItem>
             ))}
-          </div>
+          </StaggeredGrid>
         )}
       </section>
     </Container>

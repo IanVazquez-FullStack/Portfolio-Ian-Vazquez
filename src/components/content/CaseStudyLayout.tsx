@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { TechStackBadges } from "@/components/content/TechStackBadges";
 import { Button } from "@/components/ui/Button";
+import { AnimatedSection } from "@/components/motion/AnimatedSection";
 import type { Project } from "@/lib/content/schemas";
 
 export type CaseStudyLayoutProps = {
@@ -56,18 +57,22 @@ export function CaseStudyLayout({ project, children }: CaseStudyLayoutProps) {
       </header>
 
       {/* MDX content */}
-      <section className="prose-container space-y-16">{children}</section>
+      <AnimatedSection variant="fadeIn">
+        <section className="prose-container space-y-16">{children}</section>
+      </AnimatedSection>
 
       {/* CTA */}
-      <div className="mt-16 flex flex-col items-center gap-4 rounded-lg border border-border bg-muted/30 p-8 text-center">
-        <h2 className="text-h3 text-foreground">¿Te interesa algo similar?</h2>
-        <p className="text-body text-muted-foreground">
-          Estoy disponible para proyectos y colaboraciones técnicas.
-        </p>
-        <Button as="a" href={`/contact?ref=${project.slug}`} variant="primary">
-          Contactá
-        </Button>
-      </div>
+      <AnimatedSection variant="fadeIn" delay={0.1}>
+        <div className="mt-16 flex flex-col items-center gap-4 rounded-lg border border-border bg-muted/30 p-8 text-center">
+          <h2 className="text-h3 text-foreground">¿Te interesa algo similar?</h2>
+          <p className="text-body text-muted-foreground">
+            Estoy disponible para proyectos y colaboraciones técnicas.
+          </p>
+          <Button as="a" href={`/contact?ref=${project.slug}`} variant="primary">
+            Contactá
+          </Button>
+        </div>
+      </AnimatedSection>
     </article>
   );
 }

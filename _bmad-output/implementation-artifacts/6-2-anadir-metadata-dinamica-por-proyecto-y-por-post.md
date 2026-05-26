@@ -1,6 +1,6 @@
 # Story 6.2: Añadir metadata dinámica por proyecto y por post
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -17,18 +17,18 @@ so that el contenido individual sea atractivo al compartirse.
 
 ## Tasks / Subtasks
 
-- [ ] Implementar `generateMetadata` en `src/app/projects/[slug]/page.tsx` (AC: #1, #4)
-  - [ ] `const project = await getProjectBySlug(params.slug)`
-  - [ ] Si `null` → retornar metadata mínima fallback (no lanzar error)
-  - [ ] `buildMetadata({ title: project.title, description: project.summary, ogImage: project.coverImage })`
-- [ ] Implementar `generateMetadata` en `src/app/blog/[slug]/page.tsx` (AC: #2, #4)
-  - [ ] `const post = await getBlogPostBySlug(params.slug)`
-  - [ ] Si `null` → retornar metadata mínima fallback
-  - [ ] `buildMetadata(...)` con `openGraph.type = 'article'`, `publishedTime: post.publishedAt`, `tags: post.tags`
-- [ ] Agregar/actualizar metadata estática en `src/app/projects/page.tsx` (AC: #3)
-  - [ ] `export const metadata = buildMetadata({ title: 'Proyectos', description: '...' })`
-- [ ] Agregar/actualizar metadata estática en `src/app/blog/page.tsx` (AC: #3)
-  - [ ] `export const metadata = buildMetadata({ title: 'Blog', description: '...' })`
+- [x] Implementar `generateMetadata` en `src/app/projects/[slug]/page.tsx` (AC: #1, #4)
+  - [x] `const project = await getProjectBySlug(params.slug)`
+  - [x] Si `null` → retornar metadata mínima fallback (no lanzar error)
+  - [x] `buildMetadata({ title: project.title, description: project.summary, ogImage: project.coverImage })`
+- [x] Implementar `generateMetadata` en `src/app/blog/[slug]/page.tsx` (AC: #2, #4)
+  - [x] `const post = await getBlogPostBySlug(params.slug)`
+  - [x] Si `null` → retornar metadata mínima fallback
+  - [x] `buildMetadata(...)` con `openGraph.type = 'article'`, `publishedTime: post.publishedAt`, `tags: post.tags`
+- [x] Agregar/actualizar metadata estática en `src/app/projects/page.tsx` (AC: #3)
+  - [x] `export const metadata = buildMetadata({ title: 'Proyectos', description: '...' })`
+- [x] Agregar/actualizar metadata estática en `src/app/blog/page.tsx` (AC: #3)
+  - [x] `export const metadata = buildMetadata({ title: 'Blog', description: '...' })`
 
 ## Dev Notes
 
@@ -60,10 +60,31 @@ so that el contenido individual sea atractivo al compartirse.
 
 ### Agent Model Used
 
-_pending_
+Raptor mini (Preview)
 
 ### Debug Log References
+- `src/app/projects/[slug]/page.tsx`: `generateMetadata` con fallback seguro y OG image absoluta.
+- `src/app/blog/[slug]/page.tsx`: `generateMetadata` con `openGraph.type = "article"`, `publishedTime` y `tags`.
+- `src/app/projects/page.tsx`: metadata estática de listados con `buildMetadata`.
+- `src/app/blog/page.tsx`: metadata estática de listados con `buildMetadata`.
+- `src/app/projects/[slug]/page.test.tsx` y `src/app/blog/[slug]/page.test.tsx`: pruebas de metadata dinámica y fallback.
 
 ### Completion Notes List
+- Implementé `generateMetadata` en `src/app/projects/[slug]/page.tsx` con fallback seguro y OG image absoluta.
+- Implementé `generateMetadata` en `src/app/blog/[slug]/page.tsx` con `openGraph.type = "article"`, `publishedTime` y `tags`.
+- Actualicé metadata estática en `src/app/projects/page.tsx` y `src/app/blog/page.tsx` usando `buildMetadata`.
+- Añadí pruebas para metadata dinámica y fallback en `src/app/projects/[slug]/page.test.tsx` y `src/app/blog/[slug]/page.test.tsx`.
 
 ### File List
+- src/app/blog/[slug]/page.tsx
+- src/app/blog/page.tsx
+- src/app/projects/[slug]/page.tsx
+- src/app/projects/page.tsx
+- src/app/blog/[slug]/page.test.tsx
+- src/app/projects/[slug]/page.test.tsx
+
+### Change Log
+- Implementada metadata dinámica por proyecto y por post, y se actualizó metadata estática de listados. (Date: 2026-05-26)
+
+### Status
+review

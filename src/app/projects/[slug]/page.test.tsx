@@ -81,8 +81,20 @@ describe("ProjectDetailPage", () => {
     vi.mocked(getProjectBySlug).mockReturnValue(project);
 
     await expect(generateMetadata({ params: Promise.resolve({ slug: "portfolio-ian" }) })).resolves.toMatchObject({
-      title: "Portfolio Ian",
       description: "Portfolio técnico",
+      openGraph: {
+        title: "Portfolio Ian",
+        description: "Portfolio técnico",
+        images: [expect.stringContaining(project.coverImage)],
+      },
+    });
+  });
+
+  it("devuelve metadata de fallback cuando el proyecto no existe", async () => {
+    vi.mocked(getProjectBySlug).mockReturnValue(null);
+
+    await expect(generateMetadata({ params: Promise.resolve({ slug: "unknown" }) })).resolves.toMatchObject({
+      description: "El proyecto solicitado no está disponible.",
     });
   });
 });

@@ -35,7 +35,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
 generated: 2026-05-25
-last_updated: 2026-05-25
+last_updated: 2026-05-26
 project: portfolio-ian
 project_key: NOKEY
 tracking_system: file-system
@@ -78,23 +78,23 @@ development_status:
   4-2-configurar-pipeline-mdx-con-syntax-highlighting-y-mdxcomponents: review
   4-3-implementar-pagina-de-listado-blog: ready-for-dev
   4-4-implementar-pagina-individual-blog-slug-con-navegacion-prev-next: ready-for-dev
-  4-5-agregar-posts-seed-y-links-contextuales-a-proyectos: ready-for-dev
+  4-5-agregar-posts-seed-y-links-contextuales-a-proyectos: review
   epic-4-retrospective: optional
 
   # ─── Epic 5: Animaciones y Motion Polish ────────────────────────────────────
   epic-5: backlog
   5-1-centralizar-variants-de-motion-y-wrappers-reutilizables: done
-  5-2-aplicar-scroll-reveals-a-home-listados-y-casos-tecnicos: ready-for-dev
+  5-2-aplicar-scroll-reveals-a-home-listados-y-casos-tecnicos: review
   5-3-implementar-transiciones-de-pagina-con-animatepresence: done
   5-4-anadir-micro-interacciones-en-botones-cards-y-links: ready-for-dev
   epic-5-retrospective: optional
 
   # ─── Epic 6: SEO, Performance y Launch Readiness ────────────────────────────
   epic-6: backlog
-  6-1-implementar-helpers-seo-y-metadata-global: ready-for-dev
+  6-1-implementar-helpers-seo-y-metadata-global: review
   6-2-anadir-metadata-dinamica-por-proyecto-y-por-post: ready-for-dev
   6-3-implementar-robots-ts-y-sitemap-ts: done
-  6-4-auditoria-de-imagenes-y-core-web-vitals: ready-for-dev
+  6-4-auditoria-de-imagenes-y-core-web-vitals: in-progress
   6-5-configurar-vercel-deploy-env-vars-y-ci-con-github-actions: ready-for-dev
   6-6-auditoria-final-de-accesibilidad-y-cross-browser: ready-for-dev
   epic-6-retrospective: optional

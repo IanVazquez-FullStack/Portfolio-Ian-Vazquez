@@ -1,28 +1,30 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import type { ReactNode } from 'react';
+import type { HTMLMotionProps } from 'framer-motion';
+import type { ElementType, ReactNode } from 'react';
 
-interface StaggeredGridProps {
-  children: ReactNode;
+interface StaggeredGridProps extends Omit<HTMLMotionProps<'div'>, 'ref'> {
   as?: keyof React.JSX.IntrinsicElements;
 }
 
 /**
  * StaggeredGrid wraps children with a stagger container.
- * Each direct child receives the slideUp variant automatically.
+ * Each direct child must be wrapped with StaggeredItem.
  * Respects prefers-reduced-motion (UX-DR8).
  */
-export function StaggeredGrid({ children, as = 'div' }: StaggeredGridProps) {
+export function StaggeredGrid({ children, as = 'div', className, ...rest }: StaggeredGridProps) {
   const reducedMotion = useReducedMotion();
+  const Tag = as as ElementType;
+  const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
 
   if (reducedMotion) {
-    const Tag = as;
-    return <Tag>{children}</Tag>;
+    return <Tag className={className} {...(rest as React.HTMLAttributes<HTMLElement>)}>{children}</Tag>;
   }
 
   return (
-    <motion.div
+    <MotionTag
+      className={className}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -31,9 +33,10 @@ export function StaggeredGrid({ children, as = 'div' }: StaggeredGridProps) {
           transition: { staggerChildren: 0.1 },
         },
       }}
+      {...rest}
     >
       {children}
-    </motion.div>
+    </MotionTag>
   );
 }
 

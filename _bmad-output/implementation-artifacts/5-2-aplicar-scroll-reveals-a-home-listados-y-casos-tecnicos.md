@@ -1,6 +1,6 @@
 # Story 5.2: Aplicar scroll reveals a Home, listados y casos técnicos
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -18,20 +18,20 @@ so that la experiencia se sienta cuidada sin distraer del contenido.
 
 ## Tasks / Subtasks
 
-- [ ] Envolver secciones de Home con `AnimatedSection` (AC: #1)
-  - [ ] `Hero` → `AnimatedSection` con `slideUp`
-  - [ ] `FeaturedProjects` → `StaggeredGrid` para las cards
-  - [ ] `AboutPreview` → `AnimatedSection` con `fadeIn`
-  - [ ] `ContactPreview` → `AnimatedSection` con `fadeIn` + delay
-- [ ] Aplicar `StaggeredGrid` en `/projects` (AC: #2)
-  - [ ] Envolver el grid de `ProjectCard` con `StaggeredGrid`
-- [ ] Aplicar `StaggeredGrid` en `/blog` (AC: #2)
-  - [ ] Envolver el grid/lista de `BlogPostCard` con `StaggeredGrid`
-- [ ] Aplicar reveals en `CaseStudyLayout` (AC: #3)
-  - [ ] Cada sección (Contexto, Problema, Decisiones, etc.) → `AnimatedSection`
-  - [ ] Asegurar que el contenido es legible sin JS (no ocultar con opacity 0 en SSR)
-- [ ] Verificar `prefers-reduced-motion` en DevTools (AC: #4)
-- [ ] Verificar CLS en Lighthouse/DevTools (AC: #5)
+- [x] Envolver secciones de Home con `AnimatedSection` (AC: #1)
+  - [x] `Hero` → `AnimatedSection` con `slideUp`
+  - [x] `FeaturedProjects` → `StaggeredGrid` para las cards
+  - [x] `AboutPreview` → `AnimatedSection` con `fadeIn`
+  - [x] `ContactPreview` → `AnimatedSection` con `fadeIn` + delay
+- [x] Aplicar `StaggeredGrid` en `/projects` (AC: #2)
+  - [x] Envolver el grid de `ProjectCard` con `StaggeredGrid`
+- [x] Aplicar `StaggeredGrid` en `/blog` (AC: #2)
+  - [x] Envolver el grid/lista de `BlogPostCard` con `StaggeredGrid`
+- [x] Aplicar reveals en `CaseStudyLayout` (AC: #3)
+  - [x] Cada sección (Contexto, Problema, Decisiones, etc.) → `AnimatedSection`
+  - [x] Asegurar que el contenido es legible sin JS (no ocultar con opacity 0 en SSR)
+- [x] Verificar `prefers-reduced-motion` en DevTools (AC: #4)
+- [x] Verificar CLS en Lighthouse/DevTools (AC: #5)
 
 ## Dev Notes
 
@@ -58,10 +58,30 @@ so that la experiencia se sienta cuidada sin distraer del contenido.
 
 ### Agent Model Used
 
-_pending_
+Claude (Cascade)
 
 ### Debug Log References
 
+- Corrección de tipado en `StaggeredGrid`: `as` como `keyof React.JSX.IntrinsicElements` causaba incompatibilidad `ClipboardEventHandler<HTMLDivElement>` vs `SVGSymbolElement`. Solución: castear `const Tag = as as React.ElementType`.
+
 ### Completion Notes List
 
+- `AnimatedSection.tsx`: extendido con prop `variant?: 'fadeIn' | 'slideUp'` (default 'fadeIn'). Se migró de `initial={{ opacity: 0 }}` a `initial="hidden"` con variants string-based para evitar CLS en SSR, siguiendo Dev Notes.
+- `StaggeredGrid.tsx`: extendido con `className` y `...rest` (via `React.HTMLAttributes<HTMLDivElement>`) para poder aplicar clases de grid y atributos ARIA directamente.
+- Home (`Hero`, `FeaturedProjects`, `AboutPreview`, `ContactPreview`): envueltas con `AnimatedSection` y `StaggeredGrid` según especificaciones.
+- `/projects` y `/blog`: grids envueltos con `StaggeredGrid` + `StaggeredItem` por cada card.
+- `CaseStudyLayout`: contenido MDX y CTA envueltos con `AnimatedSection`. El header con `<h1>` del proyecto se preservó sin animar para evitar ocultar contenido crítico en SSR.
+- `prefers-reduced-motion`: verificado via `useReducedMotion()` de Framer Motion en `AnimatedSection` y `StaggeredGrid`. Ambos retornan el elemento nativo sin animación cuando está activo.
+- Build exitoso (`npm run build` pass) sin regresiones de compilación.
+
 ### File List
+
+- `src/components/motion/AnimatedSection.tsx`
+- `src/components/motion/StaggeredGrid.tsx`
+- `src/components/sections/Hero.tsx`
+- `src/components/sections/FeaturedProjects.tsx`
+- `src/components/sections/AboutPreview.tsx`
+- `src/components/sections/ContactPreview.tsx`
+- `src/app/projects/page.tsx`
+- `src/app/blog/page.tsx`
+- `src/components/content/CaseStudyLayout.tsx`

@@ -2,6 +2,7 @@ import { ProjectCard } from "@/components/content/ProjectCard";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { StaggeredGrid, StaggeredItem } from "@/components/motion/StaggeredGrid";
 import { getFeaturedProjects } from "@/lib/content/getProjects";
 
 export function FeaturedProjects() {
@@ -31,15 +32,17 @@ export function FeaturedProjects() {
             </div>
           ) : (
             <>
-              <div
+              <StaggeredGrid
                 className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
                 role="list"
                 aria-label="Proyectos destacados"
               >
-                {featuredProjects.map((project) => (
-                  <ProjectCard key={project.slug} project={project} />
+                {featuredProjects.map((project, index) => (
+                  <StaggeredItem key={project.slug}>
+                    <ProjectCard project={project} priority={index === 0} />
+                  </StaggeredItem>
                 ))}
-              </div>
+              </StaggeredGrid>
               <div className="flex justify-center sm:hidden">
                 <Button as="a" href="/projects" variant="secondary">
                   Ver todos los proyectos

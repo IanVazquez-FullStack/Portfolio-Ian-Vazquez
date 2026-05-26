@@ -4,8 +4,8 @@
  */
 
 export const personal = {
-  fullName: "Ian Manuel Vázquez",
-  displayName: "Ian Vázquez",
+  fullName: "Ian Manuel Vazquez",
+  displayName: "Ian Vazquez",
   title: "Full Stack Developer",
   location: "Buenos Aires, Argentina",
   email: "ianvazquezwork@gmail.com",

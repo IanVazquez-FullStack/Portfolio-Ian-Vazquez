@@ -5,6 +5,7 @@ import { compileMdx } from "@/lib/content/mdx";
 import { CaseStudyLayout } from "@/components/content/CaseStudyLayout";
 import MDXComponents from "@/components/content/MDXComponents";
 import { Container } from "@/components/ui/Container";
+import { buildMetadata } from "@/lib/seo/metadata";
 import { SITE_URL } from "@/lib/seo/site";
 
 export async function generateStaticParams() {
@@ -19,17 +20,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
-  if (!project) return { title: "Proyecto no encontrado" };
+  if (!project) {
+    return buildMetadata({
+      title: "Proyecto no encontrado",
+      description: "El proyecto solicitado no está disponible.",
+    });
+  }
 
-  return {
+  return buildMetadata({
     title: project.title,
     description: project.summary,
-    openGraph: {
-      title: project.title,
-      description: project.summary,
-      images: project.coverImage ? [`${SITE_URL}${project.coverImage}`] : undefined,
-    },
-  };
+    ogImage: project.coverImage ? `${SITE_URL}${project.coverImage}` : undefined,
+  });
 }
 
 export default async function ProjectDetailPage({

@@ -3,7 +3,7 @@ import { contactSchema } from "./contactSchema";
 
 describe("contactSchema", () => {
   const validInput = {
-    name: "Ian Vázquez",
+    name: "Ian Vazquez",
     email: "ian@example.com",
     subject: "Consulta de proyecto",
     message: "Este es un mensaje de prueba con más de diez caracteres.",
