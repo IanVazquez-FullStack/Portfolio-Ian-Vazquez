@@ -43,12 +43,12 @@ export function CaseStudyLayout({ project, children }: CaseStudyLayoutProps) {
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
           {project.demoUrl ? (
-            <Button as="a" href={project.demoUrl} variant="secondary">
+            <Button as="a" href={project.demoUrl} variant="secondary" target="_blank" rel="noopener noreferrer">
               Demo
             </Button>
           ) : null}
           {project.repoUrl ? (
-            <Button as="a" href={project.repoUrl} variant="secondary">
+            <Button as="a" href={project.repoUrl} variant="secondary" target="_blank" rel="noopener noreferrer">
               Repositorio
             </Button>
           ) : null}
@@ -64,12 +64,9 @@ export function CaseStudyLayout({ project, children }: CaseStudyLayoutProps) {
         <p className="text-body text-muted-foreground">
           Estoy disponible para proyectos y colaboraciones técnicas.
         </p>
-        <Link
-          href={`/contact?ref=${project.slug}`}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-accent px-5 py-2.5 text-body font-semibold text-slate-950 transition-colors hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
+        <Button as="a" href={`/contact?ref=${project.slug}`} variant="primary">
           Contactá
-        </Link>
+        </Button>
       </div>
     </article>
   );

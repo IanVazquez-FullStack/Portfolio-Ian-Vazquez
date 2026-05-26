@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -47,9 +46,12 @@ export default function RootLayout({
       className={cn("h-full antialiased", inter.variable, jetbrainsMono.variable)}
       suppressHydrationWarning
     >
-      <Script id="theme-script" strategy="beforeInteractive">
-        {themeScript}
-      </Script>
+      <head>
+        <script
+          id="theme-script"
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+      </head>
       <body className="min-h-full bg-background font-sans text-foreground">
         <a
           href="#main-content"

@@ -68,7 +68,7 @@ development_status:
   3-2-construir-contactform-con-validacion-en-tiempo-real: review
   3-3-implementar-route-handler-post-api-contact-con-validacion-y-honeypot: review
   3-4-integrar-resend-para-envio-de-email: ready-for-dev
-  3-5-estados-de-ui-loading-success-error-con-retry-y-preservacion-de-datos: ready-for-dev
+  3-5-estados-de-ui-loading-success-error-con-retry-y-preservacion-de-datos: review
   3-6-componer-pagina-contact-y-ctas-contextuales: ready-for-dev
   epic-3-retrospective: optional
 

@@ -1,6 +1,6 @@
 # Story 3.4: Integrar Resend para envío de email
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -18,19 +18,19 @@ so that pueda responder oportunidades a tiempo (FR-08).
 
 ## Tasks / Subtasks
 
-- [ ] Instalar SDK de Resend: `npm install resend` (AC: #1)
-- [ ] Crear `src/lib/email/sendContactEmail.ts` (AC: #1, #2, #3, #4)
-  - [ ] Inicializar `new Resend(process.env.RESEND_API_KEY)`
-  - [ ] Función `sendContactEmail(data: ContactInput): Promise<{ ok: boolean; error?: string }>`
-  - [ ] `from: process.env.CONTACT_FROM_EMAIL`
-  - [ ] `to: process.env.CONTACT_TO_EMAIL`
-  - [ ] `replyTo: data.email`
-  - [ ] `subject: \`[portfolio-ian] ${data.subject}\``
-  - [ ] Cuerpo HTML o texto con nombre, email, asunto y mensaje formateados
-  - [ ] `try/catch`: loguear error con `console.error` (sin incluir la API key), retornar `{ ok: false, error: 'email_send_failed' }`
-- [ ] Actualizar `src/app/api/contact/route.ts` para llamar `sendContactEmail()` (AC: #1)
-  - [ ] Reemplazar el `// TODO Story 3.4` por la llamada real
-- [ ] Verificar `.env.example` con las 4 variables (AC: #5)
+- [x] Instalar SDK de Resend: `npm install resend` (AC: #1)
+- [x] Crear `src/lib/email/sendContactEmail.ts` (AC: #1, #2, #3, #4)
+  - [x] Inicializar `new Resend(process.env.RESEND_API_KEY)` (lazy, dentro de la función)
+  - [x] Función `sendContactEmail(data: ContactInput): Promise<{ ok: boolean; error?: string }>`
+  - [x] `from: process.env.CONTACT_FROM_EMAIL`
+  - [x] `to: process.env.CONTACT_TO_EMAIL`
+  - [x] `replyTo: data.email`
+  - [x] `subject: \`[portfolio-ian] ${data.subject}\``
+  - [x] Cuerpo HTML o texto con nombre, email, asunto y mensaje formateados
+  - [x] `try/catch`: loguear error con `console.error` (sin incluir la API key), retornar `{ ok: false, error: 'email_send_failed' }`
+- [x] Actualizar `src/app/api/contact/route.ts` para llamar `sendContactEmail()` (AC: #1)
+  - [x] Reemplazar el `// TODO Story 3.4` por la llamada real
+- [x] Verificar `.env.example` con las 4 variables (AC: #5)
 
 ## Dev Notes
 

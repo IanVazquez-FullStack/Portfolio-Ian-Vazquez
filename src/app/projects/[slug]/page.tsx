@@ -5,6 +5,7 @@ import { compileMdx } from "@/lib/content/mdx";
 import { CaseStudyLayout } from "@/components/content/CaseStudyLayout";
 import MDXComponents from "@/components/content/MDXComponents";
 import { Container } from "@/components/ui/Container";
+import { SITE_URL } from "@/lib/seo/site";
 
 export async function generateStaticParams() {
   const projects = getProjects();
@@ -26,7 +27,7 @@ export async function generateMetadata({
     openGraph: {
       title: project.title,
       description: project.summary,
-      images: project.coverImage ? [project.coverImage] : undefined,
+      images: project.coverImage ? [`${SITE_URL}${project.coverImage}`] : undefined,
     },
   };
 }

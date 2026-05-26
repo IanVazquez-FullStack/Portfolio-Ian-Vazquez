@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST, GET, PUT, DELETE, PATCH } from "./route";
 import { NextRequest } from "next/server";
+import * as emailModule from "@/lib/email/sendContactEmail";
 
 describe("POST /api/contact", () => {
   const createMockRequest = (body: Record<string, unknown>) => {
@@ -15,6 +16,7 @@ describe("POST /api/contact", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.spyOn(emailModule, "sendContactEmail").mockResolvedValue({ ok: true });
   });
 
   it("retorna 200 y éxito para datos de contacto válidos", async () => {

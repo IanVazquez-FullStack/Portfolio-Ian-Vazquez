@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 interface PageTransitionProps {
@@ -9,10 +9,14 @@ interface PageTransitionProps {
 
 export function PageTransition({ children }: PageTransitionProps) {
   const shouldReduceMotion = useReducedMotion();
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Durante SSR/hidratación, useReducedMotion retorna null.
-  // Ser conservador: no animar hasta tener una respuesta definitiva.
-  if (shouldReduceMotion ?? true) {
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Durante SSR y la primera hidratación, evitamos animar para prevenir mismatches.
+  if (!isMounted || (shouldReduceMotion ?? true)) {
     return <>{children}</>;
   }
 

@@ -50,6 +50,7 @@ export function ProjectCard({ project, headingLevel = "h3" }: ProjectCardProps) 
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Ver demo de ${project.title}`}
                 className="text-caption text-accent hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 Demo
@@ -60,6 +61,7 @@ export function ProjectCard({ project, headingLevel = "h3" }: ProjectCardProps) 
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Ver repositorio de ${project.title}`}
                 className="text-caption text-accent hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 Repositorio

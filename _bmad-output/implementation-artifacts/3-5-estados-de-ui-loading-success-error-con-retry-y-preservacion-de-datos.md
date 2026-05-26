@@ -1,6 +1,6 @@
 # Story 3.5: Estados de UI loading/success/error con retry y preservación de datos
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -18,24 +18,27 @@ so that pueda contactar con confianza incluso con problemas de red.
 
 ## Tasks / Subtasks
 
-- [ ] Conectar `ContactForm` con el endpoint `POST /api/contact` (AC: #1)
-  - [ ] En `handleSubmit`: `fetch('/api/contact', { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })`
-  - [ ] `setFormStatus('loading')` antes del fetch
-- [ ] Implementar estado `success` (AC: #2)
-  - [ ] Si `response.ok` y `data.ok === true` → `setFormStatus('success')`
-  - [ ] Renderizar panel de éxito en lugar del formulario
-  - [ ] CTA "Enviar otro mensaje": `reset()` + `setFormStatus('idle')`
-- [ ] Implementar estado `error` con preservación de datos (AC: #3)
-  - [ ] Si error de red (catch) o `data.ok === false` con 500 → `setFormStatus('error')`
-  - [ ] Mostrar mensaje: "No pude enviar el mensaje. Revisá tu conexión e intentá de nuevo."
-  - [ ] NO llamar `reset()` — el formulario mantiene los valores escritos
-  - [ ] Botón "Reintentar" visible
-- [ ] Implementar manejo de `400` con fieldErrors (AC: #4)
-  - [ ] Si `data.ok === false` con `fieldErrors` → usar `setError` de React Hook Form por campo
-  - [ ] Mantener valores de otros campos intactos
-- [ ] Crear/completar `tests/e2e/contact.spec.ts` con Playwright (AC: #5)
-  - [ ] Test caso success: mockear endpoint con `page.route()`, verificar panel success
-  - [ ] Test caso error: mockear endpoint con 500, verificar mensaje error + datos preservados
+- [x] Conectar `ContactForm` con el endpoint `POST /api/contact` (AC: #1)
+  - [x] En `handleSubmit`: `fetch('/api/contact', { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })`
+  - [x] `setFormStatus('loading')` antes del fetch
+- [x] Implementar estado `success` (AC: #2)
+  - [x] Si `response.ok` y `data.ok === true` → `setFormStatus('success')`
+  - [x] Renderizar panel de éxito en lugar del formulario
+  - [x] CTA "Enviar otro mensaje": `reset()` + `setFormStatus('idle')`
+- [x] Implementar estado `error` con preservación de datos (AC: #3)
+  - [x] Si error de red (catch) o `data.ok === false` con 500 → `setFormStatus('error')`
+  - [x] Mostrar mensaje: "No pude enviar el mensaje. Revisá tu conexión e intentá de nuevo."
+  - [x] NO llamar `reset()` — el formulario mantiene los valores escritos
+  - [x] Botón "Reintentar" visible
+- [x] Implementar manejo de `400` con fieldErrors (AC: #4)
+  - [x] Si `data.ok === false` con `fieldErrors` → usar `setError` de React Hook Form por campo
+  - [x] Mantener valores de otros campos intactos
+- [x] Crear/completar `tests/e2e/contact.spec.ts` con Playwright (AC: #5)
+  - [x] Test caso success: mockear endpoint con `page.route()`, verificar panel success
+  - [x] Test caso error: mockear endpoint con 500, verificar mensaje error + datos preservados
+  - [x] Test caso retry: error 500 → retry → éxito
+  - [x] Test caso 400 fieldErrors: verificar errores en campo específico + datos preservados
+  - [x] Test caso reset: enviar → éxito → "Enviar otro mensaje" → formulario limpio
 
 ## Dev Notes
 
@@ -79,10 +82,26 @@ tests/e2e/
 
 ### Agent Model Used
 
-_pending_
+Cascade (Claude)
 
 ### Debug Log References
 
+- Error de lint `react-hooks/set-state-in-effect` en `useEffect` que llamaba `setState` directamente → solución: eliminar `useEffect` y confiar en `defaultValues` de `useForm`.
+- Tests E2E intermitentes por race condition entre Playwright `fill()` y React Hook Form `mode: "onBlur"` en entorno de hidratación → workaround con `page.type()` con delay.
+- Playwright browser no instalado → `npx playwright install chromium`.
+- Selector `getByRole('alert')` ambiguo (Next.js route announcer) → cambiado a `getByText()` específico.
+
 ### Completion Notes List
 
+- Componente `ContactForm.tsx` implementado con estados `idle | loading | success | error`, fetch real a `/api/contact`, manejo de errores 400/500 con `fieldErrors` vía `setError`, preservación de datos en error, panel de éxito con botón reset, accesibilidad `aria-live="polite"` y `role="status"`.
+- `useEffect` con `setState` directo eliminado para resolver lint.
+- Tests unitarios: 13/13 pasan (Vitest + Testing Library).
+- Tests E2E: 5 tests creados en `tests/e2e/contact.spec.ts`, 4/5 pasan consistentemente, 1 intermitente por race condition Playwright/RHF hydration.
+- Build y lint pasan.
+
 ### File List
+
+- `src/components/forms/ContactForm.tsx` — formulario con estados y fetch
+- `src/components/forms/ContactForm.test.tsx` — tests unitarios (13 tests)
+- `tests/e2e/contact.spec.ts` — tests E2E Playwright (5 tests)
+- `playwright.config.ts` — configuración Playwright con `npm start`

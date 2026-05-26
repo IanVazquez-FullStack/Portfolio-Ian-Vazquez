@@ -25,10 +25,19 @@ const prettyCodeOptions = {
   keepBackground: false,
 };
 
+let rehypePrettyCode: typeof import("rehype-pretty-code").default | null = null;
+
+async function getRehypePrettyCode() {
+  if (!rehypePrettyCode) {
+    rehypePrettyCode = (await import("rehype-pretty-code")).default;
+  }
+  return rehypePrettyCode;
+}
+
 export async function compileMdx(source: string): Promise<React.FC<{ components?: MDXComponents }>> {
   const code = await compile(source, {
     outputFormat: "function-body",
-    rehypePlugins: [[(await import("rehype-pretty-code")).default, prettyCodeOptions]],
+    rehypePlugins: [[await getRehypePrettyCode(), prettyCodeOptions]],
   });
 
   const { default: Content } = await run(String(code), {

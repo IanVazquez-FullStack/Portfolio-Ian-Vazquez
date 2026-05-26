@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { contactSchema, type ContactInput } from "@/lib/validation/contactSchema";
 import { Button } from "@/components/ui/Button";
+import { contactSchema, type ContactInput } from "@/lib/validation/contactSchema";
 
 export type FormStatus = "idle" | "validating" | "loading" | "success" | "error";
 
 type ContactFormProps = {
   onSubmit?: (data: ContactInput) => Promise<void>;
+  defaultSubject?: string;
 };
 
 const fieldIds = {
@@ -24,36 +25,109 @@ function errorId(field: keyof typeof fieldIds): string {
   return `${fieldIds[field]}-error`;
 }
 
-export function ContactForm({ onSubmit }: ContactFormProps) {
+export function ContactForm({ onSubmit, defaultSubject }: ContactFormProps) {
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
+  const [globalError, setGlobalError] = useState("");
 
   const {
     register,
     handleSubmit,
+    reset,
+    clearErrors,
+    setError,
     formState: { errors },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     mode: "onBlur",
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: defaultSubject ?? "",
+      message: "",
+      company: "",
+    },
   });
 
   async function handleFormSubmit(data: ContactInput) {
     setFormStatus("loading");
+    setGlobalError("");
+    clearErrors();
 
     try {
       if (onSubmit) {
         await onSubmit(data);
       } else {
-        // Placeholder: simula envío hasta integración con endpoint (Story 3.5)
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const payload = (await response.json()) as {
+          ok?: boolean;
+          error?: string;
+          fieldErrors?: Record<string, string[]>;
+        };
+
+        if (!response.ok) {
+          if (payload.fieldErrors) {
+            for (const [field, messages] of Object.entries(payload.fieldErrors)) {
+              setError(field as keyof ContactInput, {
+                type: "server",
+                message: messages[0],
+              });
+            }
+            setFormStatus("error");
+            return;
+          }
+
+          throw new Error(payload.error ?? "No pude enviar el mensaje.");
+        }
       }
+
       setFormStatus("success");
     } catch {
       setFormStatus("error");
+      setGlobalError(
+        "No pude enviar el mensaje. Revisá tu conexión e intentá de nuevo."
+      );
     }
   }
 
+  function handleReset() {
+    reset({
+      name: "",
+      email: "",
+      subject: defaultSubject ?? "",
+      message: "",
+      company: "",
+    });
+    clearErrors();
+    setGlobalError("");
+    setFormStatus("idle");
+  }
+
+  if (formStatus === "success") {
+    return (
+      <div className="rounded-2xl border border-border bg-muted/40 p-6 sm:p-8">
+        <p role="status" className="text-body-lg text-foreground">
+          Mensaje enviado correctamente.
+        </p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Gracias por escribir. Me pondré en contacto a la brevedad.
+        </p>
+        <div className="mt-5">
+          <Button type="button" onClick={handleReset}>
+            Enviar otro mensaje
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   const isLoading = formStatus === "loading";
-  const isSuccess = formStatus === "success";
   const isError = formStatus === "error";
 
   return (
@@ -62,7 +136,6 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
       className="flex flex-col gap-5"
       noValidate
     >
-      {/* Honeypot — invisible para humanos, accesible para bots */}
       <div
         aria-hidden="true"
         style={{ position: "absolute", left: "-9999px" }}
@@ -77,7 +150,6 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         />
       </div>
 
-      {/* Name */}
       <div className="flex flex-col gap-1.5">
         <label htmlFor={fieldIds.name} className="text-sm font-medium text-foreground">
           Nombre
@@ -97,7 +169,6 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         )}
       </div>
 
-      {/* Email */}
       <div className="flex flex-col gap-1.5">
         <label htmlFor={fieldIds.email} className="text-sm font-medium text-foreground">
           Correo electrónico
@@ -117,7 +188,6 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         )}
       </div>
 
-      {/* Subject */}
       <div className="flex flex-col gap-1.5">
         <label htmlFor={fieldIds.subject} className="text-sm font-medium text-foreground">
           Asunto
@@ -137,7 +207,6 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         )}
       </div>
 
-      {/* Message */}
       <div className="flex flex-col gap-1.5">
         <label htmlFor={fieldIds.message} className="text-sm font-medium text-foreground">
           Mensaje
@@ -157,33 +226,24 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         )}
       </div>
 
-      {/* Submit */}
-      <Button
-        type="submit"
-        loading={isLoading}
-        disabled={isLoading || isSuccess}
-        className="min-h-11 w-full sm:w-auto"
-      >
-        {isLoading
-          ? "Enviando..."
-          : isSuccess
-            ? "Enviado"
-            : isError
-              ? "Reintentar envío"
-              : "Enviar"}
-      </Button>
+      <div className="flex flex-col gap-3">
+        <Button
+          type="submit"
+          loading={isLoading}
+          disabled={isLoading}
+          className="min-h-11 w-full sm:w-auto"
+        >
+          {isLoading ? "Enviando..." : isError ? "Reintentar envío" : "Enviar"}
+        </Button>
 
-      {/* Estado global del formulario */}
-      {isSuccess && (
-        <p role="status" className="text-sm text-success">
-          Mensaje enviado correctamente.
-        </p>
-      )}
-      {isError && (
-        <p role="alert" className="text-sm text-error">
-          Ocurrió un error al enviar. Por favor, intenta de nuevo.
-        </p>
-      )}
+        <div aria-live="polite" aria-atomic="true">
+          {isError && globalError && (
+            <p role="alert" className="text-sm text-error">
+              {globalError}
+            </p>
+          )}
+        </div>
+      </div>
     </form>
   );
 }

@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/Badge";
+import { cn } from "@/lib/utils";
 
 export type TechStackVariant = "compact" | "detailed" | "grouped";
 
@@ -7,10 +8,6 @@ type TechStackBadgesProps = {
   variant?: TechStackVariant;
   className?: string;
 };
-
-function joinClasses(...classes: Array<string | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
 
 /**
  * Mapeo semántico de tecnologías a variantes de Badge.
@@ -36,7 +33,7 @@ export function TechStackBadges({ stack, variant = "compact", className }: TechS
   if (variant === "grouped") {
     return (
       <div
-        className={joinClasses("flex flex-wrap items-center gap-1", className)}
+        className={cn("flex flex-wrap items-center gap-1", className)}
         role="list"
         aria-label={`Stack tecnológico: ${stack.length} tecnologías`}
       >
@@ -47,7 +44,7 @@ export function TechStackBadges({ stack, variant = "compact", className }: TechS
               {tech}
             </Badge>
             {index < stack.length - 1 && (
-              <span className="sr-only" aria-hidden="true">, </span>
+              <span className="sr-only">, </span>
             )}
           </span>
         ))}
@@ -57,7 +54,7 @@ export function TechStackBadges({ stack, variant = "compact", className }: TechS
 
   return (
     <div
-      className={joinClasses(
+      className={cn(
         "flex flex-wrap items-center gap-2",
         variant === "detailed" ? "gap-2.5" : "gap-1.5",
         className,

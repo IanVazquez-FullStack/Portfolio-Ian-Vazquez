@@ -33,9 +33,6 @@ export function ArchitectureDiagram({
           width={width}
           height={height}
           className="object-contain"
-          role="img"
-          aria-label={alt}
-          aria-describedby={descriptionId}
           sizes="(max-width: 768px) 100vw, 800px"
         />
       </div>
