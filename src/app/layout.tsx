@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { buildMetadata } from "@/lib/seo/metadata";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -33,13 +34,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Ian Vázquez | Portfolio",
-    template: "%s | Ian Vázquez",
-  },
-  description: "Portfolio personal de Ian Vázquez - Desarrollador Full Stack",
-};
+export const metadata = buildMetadata();
 
 export default function RootLayout({
   children,
@@ -52,9 +47,9 @@ export default function RootLayout({
       className={cn("h-full antialiased", inter.variable, jetbrainsMono.variable)}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+      <Script id="theme-script" strategy="beforeInteractive">
+        {themeScript}
+      </Script>
       <body className="min-h-full bg-background font-sans text-foreground">
         <a
           href="#main-content"
