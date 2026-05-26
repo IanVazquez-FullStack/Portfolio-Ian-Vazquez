@@ -63,12 +63,14 @@ describe("blog post loaders", () => {
 
   it("excludes draft posts in production mode", () => {
     const originalNodeEnv = process.env.NODE_ENV;
+    // @ts-expect-error - intentionally setting NODE_ENV for test
     process.env.NODE_ENV = "production";
 
     try {
       const posts = getBlogPosts();
       expect(posts.some((post) => post.draft)).toBe(false);
     } finally {
+      // @ts-expect-error - restoring original NODE_ENV
       process.env.NODE_ENV = originalNodeEnv;
     }
   });

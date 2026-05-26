@@ -1,38 +1,152 @@
-# Portfolio-Ian-Vazquez
+# Portfolio Ian Vazquez
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Portfolio personal construido con Next.js 14+, TypeScript, Tailwind CSS y Framer Motion.
 
-## Getting Started
+## Stack Tecnológico
 
-First, run the development server:
+- **Next.js 14+** — App Router
+- **TypeScript** — modo estricto
+- **Tailwind CSS** — sistema custom de tokens
+- **Framer Motion** — animaciones
+- **React Hook Form + Zod** — formularios y validación
+- **Resend** — envío de emails
+- **MDX** — contenido de proyectos y blog
+- **Playwright** — E2E tests
+
+## Configuración Local
+
+### Prerrequisitos
+
+- Node.js 20.x (LTS)
+- npm
+
+### Instalación
+
+```bash
+# Clonar el repositorio
+git clone <repo-url>
+cd portfolio-ian
+
+# Instalar dependencias
+npm install
+```
+
+### Variables de Entorno
+
+Crear un archivo `.env.local` en la raíz del proyecto con las siguientes variables:
+
+```env
+RESEND_API_KEY=your_resend_api_key
+CONTACT_TO_EMAIL=your_email@example.com
+CONTACT_FROM_EMAIL=noreply@yourdomain.com
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+**Nota:** `.env.local` nunca se debe commitear al repositorio. Las variables de referencia están en `.env.example`.
+
+### Ejecutar en Desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy en Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Configuración Inicial
 
-## Learn More
+1. **Importar proyecto en Vercel:**
+   - Ir a [vercel.com](https://vercel.com)
+   - Click en "Add New Project"
+   - Importar desde GitHub
+   - Framework preset: Next.js
 
-To learn more about Next.js, take a look at the following resources:
+2. **Configurar variables de entorno en Vercel Dashboard:**
+   - Ir a Settings → Environment Variables
+   - Agregar las siguientes variables:
+     - `RESEND_API_KEY` — clave de API de Resend
+     - `CONTACT_TO_EMAIL` — email destino del formulario
+     - `CONTACT_FROM_EMAIL` — email remitente
+     - `NEXT_PUBLIC_SITE_URL` — URL de producción (ej. `https://portfolio-ian.vercel.app`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Deploy automático:**
+   - Push a `main` → deploy automático a producción
+   - Pull Requests → preview deployments automáticos
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Rotar Variables de Entorno
 
-## Deploy on Vercel
+Para cambiar una variable de entorno en producción:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Ir a Vercel Dashboard → Settings → Environment Variables
+2. Editar la variable deseada
+3. Hacer un nuevo deploy (trigger manual o push a main)
+4. Vercel aplicará las nuevas variables en el siguiente deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## CI/CD con GitHub Actions
+
+El proyecto tiene un workflow de CI en `.github/workflows/ci.yml` que:
+
+- Se ejecuta en cada push a `main` y en pull requests
+- Corre `npm ci`, `npm run lint`, `tsc --noEmit` y `npm run build`
+- Bloquea merges si alguna validación falla
+
+### Branch Protection (Recomendado)
+
+Para requerir que CI pase antes de merge:
+
+1. Ir a GitHub Settings → Branches
+2. Add rule para `main`
+3. Habilitar "Require status checks to pass before merging"
+4. Seleccionar el job de CI del workflow
+
+## Scripts Disponibles
+
+```bash
+npm run dev          # Iniciar servidor de desarrollo
+npm run build        # Build para producción
+npm run start        # Iniciar servidor de producción
+npm run lint         # Ejecutar ESLint
+npm run type-check   # Verificar tipos con TypeScript
+```
+
+## Estructura del Proyecto
+
+```
+src/
+├── app/              # App Router de Next.js
+├── components/       # Componentes React
+│   ├── ui/          # Primitivas visuales
+│   ├── layout/      # Header, Footer, Navigation
+│   ├── sections/    # Secciones de páginas
+│   ├── content/     # Componentes de contenido
+│   ├── forms/       # Formularios
+│   └── motion/      # Wrappers de animación
+├── lib/             # Utilidades y helpers
+│   ├── content/     # Loaders MDX
+│   ├── email/       # Lógica de email
+│   ├── motion/      # Variants de Framer Motion
+│   └── seo/         # Helpers de metadata
+└── styles/          # Estilos globales y tokens
+```
+
+## Testing
+
+```bash
+# Ejecutar E2E tests con Playwright
+npx playwright test
+
+# Ver reporte de tests
+npx playwright show-report
+```
+
+## Convenciones de Código
+
+- TypeScript estricto obligatorio
+- Alias de imports: usar `@/*` en vez de rutas relativas
+- Server Components por default, `"use client"` solo cuando sea necesario
+- Schemas Zod nombrados como `thingSchema`
+- Components en PascalCase
+- No usar `any`, preferir `unknown` con narrowing
+
+Ver `_bmad-output/project-context.md` para reglas detalladas del proyecto.

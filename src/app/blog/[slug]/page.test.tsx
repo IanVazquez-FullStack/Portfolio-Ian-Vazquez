@@ -1,19 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ReactNode } from "react";
-import { notFound } from "next/navigation";
 import { generateMetadata, generateStaticParams } from "./page";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/content/getBlogPosts";
-import { compileMdx } from "@/lib/content/mdx";
 
 vi.mock("@/lib/content/getBlogPosts", () => ({
   getBlogPostBySlug: vi.fn(),
   getBlogPosts: vi.fn(),
-}));
-
-vi.mock("@/lib/content/mdx", () => ({
-  compileMdx: vi.fn(async () => function MockContent() {
-    return <p>Contenido MDX</p>;
-  }),
 }));
 
 vi.mock("next/navigation", () => ({

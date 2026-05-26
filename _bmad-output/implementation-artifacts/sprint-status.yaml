@@ -95,6 +95,6 @@ development_status:
   6-2-anadir-metadata-dinamica-por-proyecto-y-por-post: ready-for-dev
   6-3-implementar-robots-ts-y-sitemap-ts: done
   6-4-auditoria-de-imagenes-y-core-web-vitals: in-progress
-  6-5-configurar-vercel-deploy-env-vars-y-ci-con-github-actions: ready-for-dev
+  6-5-configurar-vercel-deploy-env-vars-y-ci-con-github-actions: review
   6-6-auditoria-final-de-accesibilidad-y-cross-browser: ready-for-dev
   epic-6-retrospective: optional
