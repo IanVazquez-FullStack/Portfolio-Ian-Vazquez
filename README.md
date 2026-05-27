@@ -2,11 +2,6 @@
 
 Portfolio personal construido con Next.js 14+, TypeScript, Tailwind CSS y Framer Motion.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14%2B-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-28A745?style=flat-square)](LICENSE)
-
 ## Stack Tecnológico
 
 - **Next.js 14+** — App Router
@@ -29,7 +24,7 @@ Portfolio personal construido con Next.js 14+, TypeScript, Tailwind CSS y Framer
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/oneConnor/Portfolio-Ian-Vazquez.git
+git clone https://github.com/oneConnor/Portfolio-Ian-Vazquez
 cd portfolio-ian
 
 # Instalar dependencias
