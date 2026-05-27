@@ -151,6 +151,47 @@ function Pre(props: HTMLAttributes<HTMLPreElement>) {
   return <CodeBlock language={language} {...props} />;
 }
 
+function Table(props: React.ComponentPropsWithoutRef<"table">) {
+  return (
+    <div className="my-6 overflow-x-auto">
+      <table
+        className="min-w-full divide-y divide-border"
+        {...props}
+      />
+    </div>
+  );
+}
+
+function Thead(props: React.ComponentPropsWithoutRef<"thead">) {
+  return <thead className="bg-muted" {...props} />;
+}
+
+function Tbody(props: React.ComponentPropsWithoutRef<"tbody">) {
+  return <tbody className="divide-y divide-border" {...props} />;
+}
+
+function Tr(props: React.ComponentPropsWithoutRef<"tr">) {
+  return <tr {...props} />;
+}
+
+function Th(props: React.ComponentPropsWithoutRef<"th">) {
+  return (
+    <th
+      className="px-4 py-3 text-left text-sm font-semibold text-foreground"
+      {...props}
+    />
+  );
+}
+
+function Td(props: React.ComponentPropsWithoutRef<"td">) {
+  return (
+    <td
+      className="px-4 py-3 text-sm text-foreground"
+      {...props}
+    />
+  );
+}
+
 export const MDXComponents = {
   h1: H1,
   h2: H2,
@@ -165,6 +206,12 @@ export const MDXComponents = {
   blockquote: Blockquote,
   code: InlineCode,
   pre: Pre,
+  table: Table,
+  thead: Thead,
+  tbody: Tbody,
+  tr: Tr,
+  th: Th,
+  td: Td,
 } satisfies MDXComponentsType;
 
 export default MDXComponents;

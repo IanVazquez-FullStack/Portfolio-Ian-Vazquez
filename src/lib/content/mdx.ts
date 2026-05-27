@@ -2,6 +2,7 @@ import { compile, run } from "@mdx-js/mdx";
 import type { MDXComponents } from "mdx/types";
 import * as runtime from "react/jsx-runtime";
 import matter from "gray-matter";
+import remarkGfm from "remark-gfm";
 
 export type ParsedMdx = {
   frontmatter: Record<string, unknown>;
@@ -37,6 +38,7 @@ async function getRehypePrettyCode() {
 export async function compileMdx(source: string): Promise<React.FC<{ components?: MDXComponents }>> {
   const code = await compile(source, {
     outputFormat: "function-body",
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [[await getRehypePrettyCode(), prettyCodeOptions]],
   });
 

@@ -1,6 +1,7 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { AnimatedBackground } from "@/components/motion/AnimatedBackground";
 import { buildMetadata } from "@/lib/seo/metadata";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -52,14 +53,15 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
       </head>
-      <body className="min-h-full bg-background font-sans text-foreground">
+      <body className="min-h-full bg-background font-sans text-foreground relative">
+        <AnimatedBackground />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-3 focus:text-slate-950 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
         >
           Saltar al contenido
         </a>
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col relative">
           <Header />
           <main id="main-content" className="flex-1">
             {children}
