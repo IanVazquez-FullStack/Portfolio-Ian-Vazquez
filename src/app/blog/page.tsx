@@ -16,7 +16,7 @@ export default function BlogPage() {
   return (
     <Container className="py-20">
       <section>
-        <p className="text-caption font-semibold uppercase tracking-wide text-accent">
+        <p className="text-caption font-semibold uppercase tracking-wide text-foreground">
           Blog
         </p>
         <h1 className="mt-3 text-display text-foreground">Blog</h1>

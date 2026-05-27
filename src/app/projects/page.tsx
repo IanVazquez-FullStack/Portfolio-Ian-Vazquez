@@ -22,7 +22,10 @@ export default function ProjectsPage() {
   return (
     <Container className="py-20">
       <section>
-        <h1 className="text-display text-foreground">Proyectos</h1>
+        <p className="text-caption font-semibold uppercase tracking-wide text-foreground">
+          Proyectos
+        </p>
+        <h1 className="mt-3 text-display text-foreground">Proyectos</h1>
         <p className="mt-4 text-body-lg text-muted-foreground max-w-3xl">
           Una selección de trabajos donde combino diseño, arquitectura y código para resolver problemas reales.
         </p>

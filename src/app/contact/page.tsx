@@ -25,7 +25,7 @@ export function ContactPage({ searchParams }: ContactPageProps) {
     <Container className="py-16 md:py-20">
       <section className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.8fr)] lg:items-start">
         <div>
-          <p className="text-caption font-semibold uppercase tracking-wide text-accent">
+          <p className="text-caption font-semibold uppercase tracking-wide text-foreground">
             Contacto
           </p>
           <h1 className="mt-3 text-display text-foreground">Trabajemos juntos</h1>
