@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { ContactPage } from "./page";
 
 describe("ContactPage", () => {
-  it("renderiza la CTA principal, el formulario y los canales de contacto con subject prellenado", () => {
-    render(<ContactPage searchParams={{ ref: "portfolio-ian" }} />);
+  it("renderiza la CTA principal, el formulario y los canales de contacto con subject prellenado", async () => {
+    render(<ContactPage searchParams={Promise.resolve({ ref: "portfolio-ian" })} />);
 
     expect(screen.getByRole("heading", { level: 1, name: /trabajemos juntos/i })).toBeDefined();
     expect(
@@ -23,6 +23,9 @@ describe("ContactPage", () => {
     );
     expect(screen.getByRole("link", { name: /email/i }).getAttribute("href")).toContain(
       "mailto:"
+    );
+    expect(screen.getByRole("link", { name: /fiverr/i }).getAttribute("href")).toContain(
+      "fiverr.com"
     );
   });
 });

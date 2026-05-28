@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, GitBranch, Mail } from "lucide-react";
+import { BriefcaseBusiness, GitBranch, Mail, ShoppingBag } from "lucide-react";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { personal } from "@/lib/data/personal";
@@ -11,14 +11,15 @@ export const metadata = buildMetadata({
 });
 
 type ContactPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     ref?: string;
-  };
+  }>;
 };
 
-export function ContactPage({ searchParams }: ContactPageProps) {
-  const defaultSubject = searchParams?.ref
-    ? `Consulta sobre proyecto: ${searchParams.ref}`
+export async function ContactPage({ searchParams }: ContactPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const defaultSubject = resolvedSearchParams?.ref
+    ? `Consulta sobre proyecto: ${resolvedSearchParams.ref}`
     : "";
 
   return (
@@ -78,6 +79,19 @@ export function ContactPage({ searchParams }: ContactPageProps) {
               <span>
                 <span className="block text-sm font-semibold">Email</span>
                 <span className="block text-sm text-muted-foreground">{personal.email}</span>
+              </span>
+            </a>
+
+            <a
+              href="https://es.fiverr.com/s/yvk5EXq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-2xl border border-border bg-background px-4 py-3 text-foreground transition-colors hover:border-border-hover hover:bg-muted"
+            >
+              <ShoppingBag className="size-5 text-accent" aria-hidden="true" />
+              <span>
+                <span className="block text-sm font-semibold">Fiverr</span>
+                <span className="block text-sm text-muted-foreground">Fiverr</span>
               </span>
             </a>
           </div>
