@@ -13,7 +13,7 @@ export const personal = {
   social: {
     github: {
       label: "GitHub",
-      url: "https://github.com/oneConnor",
+      url: "https://github.com/IanVazquez-FullStack",
     },
     linkedin: {
       label: "LinkedIn",

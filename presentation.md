@@ -511,7 +511,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 ## Enlaces y Recursos
 
 ### Repositorio:
-🔗 https://github.com/oneConnor/Portfolio-Ian-Vazquez
+🔗 https://github.com/IanVazquez-FullStack/Portfolio-Ian-Vazquez
 
 ### Deploy en Producción:
 🌐 https://portfolio-ian.vercel.app
